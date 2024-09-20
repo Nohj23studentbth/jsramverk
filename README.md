@@ -1,6 +1,8 @@
 # SSR Editor
-
+---
 Project for DV1677 JSRamverk
+
+## Specification
 
 Satt port på 3006 på  const port = process.env.PORT || 3000; // Default to 3006 if PORT is undefined i app.mjs, för att kunna öppna appen. Annars får man felmeddelade "app listening on port undefined"
 
@@ -161,3 +163,110 @@ Sedan la vi även till doc.ejs att titeln blir till "Document: (och sedan titeln
 är där ingen title så blir det No Title.
 
 Det vi kan tänka på till nästa moment är att exemplevis med två liknande namn titlar så sätts automatiskt en 1a efter. Exempelvis ett doc heter Hej, och om jag sedan döper ett till doc till Hej så bör det automatiskt bli Hej1 och så vidare.
+
+## Refactorering
+
+### Express JSON
+För att slippa omstarta app vid varje förandring installerar jag nodemon
+`npm install -g nodemon`
+
+Bifogar `"start": "nodemon app.mjs"` till scripts i the pakage.json
+
+Bifogar `"production": "NODE_ENV='production' node app.js"` till scripts in the pakage.json att kunna starta i productions lage.
+
+I app.mjs bifogar route `/json` som ska visa jsons innehåll och andra routes ifrån Emils Express-artikeln.
+
+Flytta routes från forsta momentet till routes/sql.mjs och JSON-relaterade routes i routes/json.mjs
+
+
+### MongoDB
+
+Bifogar `"type": "module"` till package.json att tillåta importera ES moduler och använda MongoDB.
+
+Kör `npm install mongodb@6.8` in command line för att skaffa moduller nödvändiga för MongoDB.
+
+Bofogar to database.mjs enligt code from MongoDB 
+
+`const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://texteditor1:dbwebb@cluster0.wf5vm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";rue&w=majority&appName=Cluster0";w=majority&appName=Cluster0";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful anslutning
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);`
+
+Kör:
+`npm install --save dotenv`
+
+Får varning om packages vulnerabilety, fixa den med `npm audit fix`
+
+Nu fiungerar database anslutning.
+
+Skapar filen .env i rootcatalog:
+`touch .env`
+sparar i env min anvandarenamn och lösenord
+
+Fixar local MongoDB anslutning: med `localMongo()` in db/mongoDB.mjs;
+Standard db name är 'docs'.
+
+fixar JSON-routes i `routes/mogo.mjs` som använder MongoDb.
+Routes visar alla document, skaffar document, söker document efter _id, title, uppdaterar document med title, skafar nya document med title "unnamed"
+
+Moved functionality to `mongoDocs.mjs`.
+
+Det ser ut som jag fick rätt anslutning till remote database, skapade en likanande db som på lokal nivå.
+
+Just nu finns det många routes: från första inlämningen, för lokal mongo och för remote mongo.
+
+Functionalitet för remote mongoDB ligger i `remoteDocs.mjs`. Allt fungerar.
+Jag raderar sql database och routes som tillhör till den.
+
+### Överföring till React
+
+Jag borjar med att instalera react modules in the project med
+` npm install react react-dom`
+
+och vite-moduler: 
+ `npm install --save-dev vite`
+
+Jag installerar också botstrap:
+`npm install bootstrap@5.2.3`
+
+Jag copierar sturt-up React-code i texteditor-react med
+`npm create vite@4.1.0` det går också bara med `npm create vite`.
+
+Jag använder filer i texteditor-react som mål för reactor-componenter i vart projekt. 
+
+Jag kopierar `index.html` i projektets root, och skapar i `src` filer: `main.tsx` och `App.tsx`.
+
+Kommand för att köra reakt-app är `npm run dev`. Refrech cole med `r`.
+Det gär fortfarande köra express-app med `npm start` och `rs` för att refrecha.
+
+Nu arbetar jag med componenter.
+Jag skapar componenter för footer och headers i `components/includes`.
+
+Jag skapar där även `ErrorBoundary.tsx` som hjälper med felsökning i React-componenter och samtidigt visar meddelande om fel i browser.
+
+Just nu finns det funktionalitet som tillåter visa alla dokument. Ser kode i `components/AppMain.tsx`.
+
+Det finns funktionalitet som skapa nya tomma dokument i  i `components/ArtickleHead.tsx`.
+
+Jag planerar vidare arbeta med mojlighet att visa och redigera enskilda dokument samt att ta bort dokument....
+
+Jag har inte skapad Azure än ... 
