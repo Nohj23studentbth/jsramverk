@@ -11,6 +11,7 @@ import morgan from 'morgan'; // logging med tredjepart modules
 import methodOverride from 'method-override';
 
 import mongoRemote from "./routes/mongoRemote.mjs";
+//import mongo from "./routes/mongo.mjs";
 
 const app = express();
 
@@ -43,7 +44,8 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
 
-app.use('/rm', mongoRemote); // import routes using remote mongoDB
+app.use('/', mongoRemote); // import routes using remote mongoDB
+//app.use('/', mongo); // import routes using local mongoDB
 
 // Add routes for 404 and error handling
 // Catch 404 and forward to error handler

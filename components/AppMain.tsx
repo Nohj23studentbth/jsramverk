@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import ArtickleHead from './ArtickleHead';
+import ArtickleHead from './ArticleHead';
+import AppArticle from './AppArticle';
+import utils from '../utils.mjs';
+import Document from '../interfase'; // import interfase for object Document
 
-interface Document {
-    _id: string;
-    title: string;
-    content: string;
-};
+// interface Result {
+//     douments: Document;
+// };
 
 function AppMain() {
     const [documents, setDocuments] = useState<Document[]>([]); // Initialize as an empty array
     const [loading, setLoading] = useState(true);
 
-    //Hook (StateHook)
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-
-    const getMessage = (documents: any) => {
-        return documents.length === 0 && <p>No documents found</p>;
-    }
-    const fetchDocuments = async () => {
+    const loadDocuments = async () => {
         try {
-            const response = await fetch('http://localhost:3000/rm/');
-            const result = await response.json();
-            
-            // result.documents is an array
-            setDocuments(result.documents);
+            const result = await utils.fetchAll();
+            console.log(result)
+            if(result.documents) {
+                setDocuments(result.documents);
+            }
         } catch (error) {
+            console.log(error);
             setDocuments([]);
         } finally {
             setLoading(false);
@@ -32,24 +28,19 @@ function AppMain() {
     };
 
     useEffect(() => {
-        fetchDocuments();
+        loadDocuments();
     }, []);
     
     // Handle loading state
 
+    if (loading) {
+        return <div>Loading...</div>;
+    };
+
     return (
         <>
-        <ArtickleHead reloadDocuments={fetchDocuments}/>
-        {getMessage(documents)}
-        <ul className='list-group'>
-            {documents.map((doc, index) => 
-                <li 
-                    className={selectedIndex === index ? "list-group-item active" : "list-group-item"}
-                    key={doc._id} 
-                    onClick={() => {setSelectedIndex(index)}}><h3><a href={doc._id}>{doc.title}</a></h3>
-                </li>
-            )}
-        </ul>
+            <ArtickleHead reloadDocuments={loadDocuments} />
+            <AppArticle documents={documents} reloadDocuments={loadDocuments} />
         </>
     );
 }

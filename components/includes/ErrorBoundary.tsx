@@ -1,3 +1,5 @@
+// elment that shows error in the screen if somethig gouse wrong
+
 import React, { Component, ReactNode, ErrorInfo } from 'react';
 
 interface ErrorBoundaryProps {

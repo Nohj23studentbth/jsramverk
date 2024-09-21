@@ -267,6 +267,18 @@ Just nu finns det funktionalitet som tillåter visa alla dokument. Ser kode i `c
 
 Det finns funktionalitet som skapa nya tomma dokument i  i `components/ArtickleHead.tsx`.
 
-Jag planerar vidare arbeta med mojlighet att visa och redigera enskilda dokument samt att ta bort dokument....
+Skapar button som tar bort dokument från collectoin. 
+Funltionalitet ligger i `components/DeleteDocument.tsx`. Button är bifogad till varje element i dikument-lista. 
+Det skulle vara bra at byta button till font-awsom ikon.
+jag installerar font-awsom: 
+`npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons` och importerar det i button.
 
-Jag har inte skapad Azure än ... 
+Finns funktionalitet som redigerar och ta bort dokument
+
+### Det ska vara bra att arbeta mera med style ...
+
+### Funderar på att plasera deleat-button in headers. Det ska visas ifal dokument selected....
+
+### Det ska vara bra att kunna updatera dokument utan att klicka på "Submit" ....
+
+### Jag har inte skapad Azure än ... 
