@@ -1,5 +1,5 @@
 import mongoDb from './db/mongoDb.mjs'
-import { ObjectId } from 'mongodb';
+import { ServerApiVersion, ObjectId } from 'mongodb';
 
 
 // Functionality
@@ -55,7 +55,7 @@ const mongoDocs = {
     },
 
     /**
-     * update documents in an collection 
+     * uppdate documents in an collection 
      * or create one if doc does not exists.
      *
      * @async
@@ -67,13 +67,13 @@ const mongoDocs = {
      *
      * @return {Promise<object>} The resultset as an array.
      */
-    updateOne: async function updateOne(id, title, content) {
+    uppdateOne: async function uppdateOne(title, content) {
 
         //const data = req.params;
  
-        const filter = { _id: new ObjectId(`${id}`) };
+        const filter = { title: title };
     
-        const options = { upsert: false }; // do not add document if the docuent with this title is note found
+        const options = { upsert: true }; // add document if the docuent with this title is note found
         const updateDoc = {
             $set: {
               title: title,
@@ -130,7 +130,6 @@ const mongoDocs = {
         //get database
         const remoteMongo = await mongoDb.remoteMongo();
         try {
-            console.log("try to delete by removeByID, id =", id);
             return await remoteMongo.collection.deleteOne({_id: new ObjectId(`${id}`)})       
         } catch (error) {
             throw error;
