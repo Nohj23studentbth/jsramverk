@@ -78,5 +78,5 @@ const server = app.listen(port, () => {
 
 
 // ES module-style code (Correct)
-export default app;
+export { app, server};
 
