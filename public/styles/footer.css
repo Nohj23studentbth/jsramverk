@@ -1,0 +1,10 @@
+
+.footer {
+    grid-area: footer;
+    background-color: #f1f3f4; /* Light gray background similar to Google Docs */
+    color: #202124; /* Dark text color for contrast */
+    padding: 1rem 2rem; /* Consistent padding for spacing */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-top: 1px solid #e0e0e0; /* Light border at the top */
+    text-align: left; /* Left align text */
+}
