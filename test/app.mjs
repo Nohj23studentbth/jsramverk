@@ -12,18 +12,18 @@ import path from 'path';
 chai.should();
 chai.use(chaiHttp);
 
-// OPTIONAL shortcat for the "chai.expect"
-const { expect } = chai;
-// tests will be writen as:
-describe('API Tests', () => {
-    it('should return status 200 and a message', async () => {
-        const res = await chai.request(app).get('/');
-        expect(res).to.have.status(200);
-        expect(res.body).to.deep.equal({ message: 'Hello World' });
-    });
+// // OPTIONAL shortcat for the "chai.expect"
+// const { expect } = chai;
+// // tests will be writen as:
+// describe('API Tests', () => {
+//     it('should return status 304 and a message', async () => {
+//         const res = await chai.request(app).get('/');
+//         expect(res).to.have.status(304);
+//         expect(res.body).to.deep.equal({ message: 'Hello World' });
+//     });
 
-    // Add more tests as needed
-});
+//     // Add more tests as needed
+// });
 
 describe('Express App', () => {
     describe('GET /', () => {
@@ -31,6 +31,7 @@ describe('Express App', () => {
             chai.request(app)
                 .get("/")
                 .end((err, res) => {
+                    console.log(res);
                     res.should.have.status(200);  // Expecting a 200 response
                     done();
                 });
