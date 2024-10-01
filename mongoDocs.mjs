@@ -20,8 +20,6 @@ const mongoDocs = {
             //get database         
             const documents = await localMongo.collection.find().toArray();
             return documents;
-        } catch (error) {
-            return error;
         } finally {
             await localMongo.client.close();
         }
@@ -47,8 +45,6 @@ const mongoDocs = {
         const localMongo = await mongoDb.localMongo();
         try {
             return await localMongo.collection.find(query, options).toArray()       
-        } catch (error) {
-            throw error;
         } finally {
             await localMongo.client.close();
         }
@@ -83,8 +79,6 @@ const mongoDocs = {
         const localMongo = await mongoDb.localMongo();
         try {
             return await localMongo.collection.updateOne(filter, updateDoc, options);
-        } catch (error) {
-            throw error;
         } finally {
             await localMongo.client.close();
         }
@@ -109,8 +103,6 @@ const mongoDocs = {
             console.log("try to insert doc")
             const document = await localMongo.collection.insertOne(data);
             return document;
-        } catch (error) {
-            throw error;
         } finally {
             await localMongo.client.close();
         }
@@ -133,8 +125,6 @@ const mongoDocs = {
         try {
             console.log("try, id =", id);
             return await localMongo.collection.deleteOne({_id: new ObjectId(`${id}`)})       
-        } catch (error) {
-            throw error;
         } finally {
             await localMongo.client.close();
         }
@@ -154,8 +144,6 @@ const mongoDocs = {
             const localMongo = await mongoDb.localMongo();
             try {
                 return await localMongo.collection.deleteOne({title: title});           
-            } catch (error) {
-                throw error;
             } finally {
                 await localMongo.client.close();
             }
@@ -175,8 +163,6 @@ const mongoDocs = {
             const localMongo = await mongoDb.localMongo();
             try {
                 return await localMongo.collection.findOne({_id: new ObjectId(`${id}`)});           
-            } catch (error) {
-                throw error;
             } finally {
                 await localMongo.client.close();
             }

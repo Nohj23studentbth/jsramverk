@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react';
 import ArticleHead from './ArticleHead';
 import AppArticle from './AppArticle';
+import Document from '../interfase';
 
-function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelectedIndex }) {
+// element properties
+interface AppMainProps {
+    documents: Document[];
+    loading: boolean;
+    reloadDocuments: () => void;
+    selectedIndex: number | null; // Selected document index from parent
+    setSelectedIndex: (index: number | null) => void; // Function to update selectedIndex in parent
+}
+
+function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelectedIndex }: AppMainProps) {
     // Load documents on component mount
     useEffect(() => {
         reloadDocuments(); // Call the passed-in function to load documents

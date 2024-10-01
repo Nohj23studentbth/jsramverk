@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import utils from '../utils.mjs';
-import DeleteDocument from './DeleteDocument';
 
 // interfase for element
 interface OneDocumentProps {
@@ -15,20 +14,6 @@ function OneDocument({ id:id, title: intialTitle, content: initialContent, handl
     const [title, setTitle] = useState(intialTitle);
     const [content, setContent] = useState(initialContent);
     const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
-
-    // // Handle form submit
-    // const handleSubmit = async (event: React.FormEvent) => {
-    //     event.preventDefault(); // Prevent page refresh
-
-    //     // Update the document by calling the backend API
-    //     const updatedDoc = {id: id, title: title, content: content };
-        
-    //     try {
-    //         await utils.processRoute('PUT', `/update`, updatedDoc);
-    //     } catch (error) {
-    //         console.error('Failed to update document:', error);
-    //     }
-    // };
 
     const handleSubmitAndClose = async (event: React.FormEvent) => {
         event.preventDefault(); // Prevent page refresh

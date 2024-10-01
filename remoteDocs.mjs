@@ -47,8 +47,6 @@ const mongoDocs = {
         const remoteMongo = await mongoDb.remoteMongo();
         try {
             return await remoteMongo.collection.find(query, options).toArray()       
-        } catch (error) {
-            throw error;
         } finally {
             await remoteMongo.client.close();
         }
@@ -83,8 +81,6 @@ const mongoDocs = {
         const remoteMongo = await mongoDb.remoteMongo();
         try {
             return await remoteMongo.collection.updateOne(filter, updateDoc, options);
-        } catch (error) {
-            throw error;
         } finally {
             await remoteMongo.client.close();
         }
@@ -109,8 +105,6 @@ const mongoDocs = {
             console.log("try to insert doc")
             const document = await remoteMongo.collection.insertOne(data);
             return document;
-        } catch (error) {
-            throw error;
         } finally {
             await remoteMongo.client.close();
         }
@@ -132,8 +126,6 @@ const mongoDocs = {
         try {
             console.log("try to delete by removeByID, id =", id);
             return await remoteMongo.collection.deleteOne({_id: new ObjectId(`${id}`)})       
-        } catch (error) {
-            throw error;
         } finally {
             await remoteMongo.client.close();
         }
@@ -153,8 +145,6 @@ const mongoDocs = {
             const remoteMongo = await mongoDb.remoteMongo();
             try {
                 return await remoteMongo.collection.deleteOne({title: title});           
-            } catch (error) {
-                throw error;
             } finally {
                 await remoteMongo.client.close();
             }
@@ -174,8 +164,6 @@ const mongoDocs = {
             const remoteMongo = await mongoDb.remoteMongo();
             try {
                 return await remoteMongo.collection.findOne({_id: new ObjectId(`${id}`)});           
-            } catch (error) {
-                throw error;
             } finally {
                 await remoteMongo.client.close();
             }
