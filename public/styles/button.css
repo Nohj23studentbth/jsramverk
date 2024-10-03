@@ -1,0 +1,25 @@
+.app-body .header div button.button {
+    display: inline-block; /* Make the link inline-block to apply padding and margins */
+    padding: 0.75rem 1.5rem; /* Add padding inside the button */
+    font-size: 1rem; /* Set the font size */
+    font-weight: bold; /* Bold text for emphasis */
+    background-color: white; /* Blue background color */
+    border: none; /* Remove the default border */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center the text inside the button */
+    text-decoration: none; /* Remove underline from the link */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition effects */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin: 10px 0 20px 0;
+}
+
+.app-body .header div button.button:hover {
+    background-color: rgb(182, 173, 173); /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly scale up the button on hover */
+}
+
+.app-body .header div button.button:active {
+    background-color: rgb(182, 173, 173); /* Even darker blue on active (click) */
+    transform: scale(0.95); /* Slightly scale down the button on click */
+}

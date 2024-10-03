@@ -1,0 +1,17 @@
+.header {
+    grid-area: header;
+    background-color: #f1f3f4; /* Light gray background similar to Google Docs */
+    color: #202124; /* Dark text color for contrast */
+    padding: 1rem 2rem; /* Slightly adjusted padding for a cleaner look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    justify-content: space-between; /* Space items apart */
+    border-bottom: 1px solid #e0e0e0; /* Light border at the bottom */
+}
+
+header h1 {
+    font-size: 1.5rem; /* Font size for the header title */
+    font-weight: 500; /* Slightly bold font weight */
+    margin: 0; /* Remove default margin */
+}

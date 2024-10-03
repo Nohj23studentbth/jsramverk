@@ -1,0 +1,17 @@
+h1 {
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1.4rem;
+    text-align: center; /* Center align the heading */
+    color: #333; /* Darker color for the heading */
+    margin-top: 2rem; /* Space above the heading */
+    margin-bottom: 1rem; /* Space below the heading */
+}
+
+p {
+    margin-bottom: 1.4rem;
+    font-size: 1rem;
+}

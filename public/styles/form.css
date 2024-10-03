@@ -1,0 +1,46 @@
+.doc {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px; /* Restrict form width for readability */
+    margin: 2rem auto; /* Center form horizontally with space above and below */
+    padding: 1.5rem; /* Add padding inside the form */
+    background-color: #fff; /* White background for the form */
+}
+
+.doc label {
+    display: block; /* Make labels block-level for proper spacing */
+    margin-bottom: 0.5rem; /* Space below each label */
+    font-weight: bold; /* Bold labels for better visibility */
+}
+
+.doc input[type="text"], 
+.doc textarea {
+    width: 100%; /* Full width for inputs and textareas */
+    padding: 0.75rem; /* Padding inside the inputs */
+    margin-bottom: 1rem; /* Space below each input */
+    border: 1px solid #ddd; /* Light border for inputs */
+    border-radius: 4px; /* Rounded corners for inputs */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+.doc textarea {
+    height: 200px; /* Set a height for the textarea */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+.doc input[type="submit"] {
+    display: block; /* Make the submit button block-level */
+    width: 100%; /* Full width for the submit button */
+    padding: 0.75rem; /* Padding inside the button */
+    background-color: #0074D9; /* Blue background color for the button */
+    color: #fff; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Font size for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.doc input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
