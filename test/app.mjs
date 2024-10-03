@@ -13,7 +13,7 @@ chai.should();
 // test för incomst router
 describe('Reports', () => {
     describe('GET /', () => {
-        it('should add a new unnamed document', (done) => {  
+        it('should get array of documents', (done) => {  
             chai.request.execute(server)
                 .get("/") // Your endpoint to fetch documents
                 .end((err, res) => {

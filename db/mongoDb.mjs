@@ -1,13 +1,14 @@
-import 'dotenv/config';
+// import 'dotenv/config';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 //Connect to remote mongo-database
 
 let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&w=majority&appName=texteditor`;
 //const testUri = "mongodb://localhost:27017/test";
 
-// if (process.env.NODE_ENV === 'test') {
-//     uri = "mongodb://localhost:27017/test";
-// }
+if (process.env.NODE_ENV === 'test') {
+    uri = "mongodb://localhost:27017/test";
+    console.log('USE LOCAL DATABASE');
+}
 
 const client = new MongoClient(uri,
     {serverApi: {
