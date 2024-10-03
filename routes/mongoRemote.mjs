@@ -22,12 +22,13 @@ router.get("/", async(req, res) => {
 // add an new unnamed document
 router.post('/', async (req, res) => {
     try {
-        const result = await documents.addNew();
-        res.json({ result });
+        const result = await documents.addNew(); // Await the document addition
+        res.status(200).json({ result }); // Respond with result if successful
     } catch (error) {
-        res.json({ error: error });
+        res.status(500).json({ error: error.message }); // Respond with an error and status 500 if it fails
     }
 });
+
 
 // update a document
 router.put('/update', async (req, res) => {
