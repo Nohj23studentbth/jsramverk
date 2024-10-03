@@ -5,9 +5,8 @@
   "main": "app.mjs",
   "type": "module",
   "scripts": {
-    "test": "PORT=4000 nyc --reporter=html --reporter=text --reporter=clover mocha --exit --timeout 10000",
-    "test:watch": "nodemon --exec 'npm run test' --ext mjs,json",
-    "start": "nodemon app.mjs",
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha --timeout 10000",
+    "start": "nodemon app.js",
     "clean": "rm -rf node_modules package-lock.json",
     "production": "NODE_ENV='production' node app.mjs",
     "dev": "vite",
