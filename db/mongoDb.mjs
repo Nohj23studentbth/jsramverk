@@ -5,10 +5,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&w=majority&appName=texteditor`;
 //const testUri = "mongodb://localhost:27017/test";
 
-if (process.env.NODE_ENV === 'test') {
-    uri = "mongodb://localhost:27017/test";
-    console.log('USE LOCAL DATABASE');
-}
+
 
 const client = new MongoClient(uri,
     {serverApi: {
@@ -26,15 +23,15 @@ const mongo = {
      * @returns object: mongo database
      */
     remoteMongo: async function remoteMongo() {
-        console.log("try to connect client")
+        if (process.env.NODE_ENV === 'test') {
+            uri = "mongodb://localhost:27017/test";
+            console.log('USE LOCAL DATABASE');
+        }
+        console.log(uri);
         await client.connect();
-        console.log(" connected client")
         try {
-            console.log("try to get/create database")
             const database = client.db(process.env.DB_NAME);
-            console.log("try to get/create collection")
             const documents = database.collection(process.env.COLLECTION_NAME);
-            console.log("try to return collection")
             return {client: client, collection: documents};
         } catch (error) {
             console.log("error by remote connection : ", error);

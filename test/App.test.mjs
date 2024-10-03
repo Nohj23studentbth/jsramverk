@@ -1,10 +1,13 @@
 /* global it describe */
 process.env.NODE_ENV = 'test';
+process.env.PORT = 4000;
 
-import * as chaiModule from "chai"; // fingerar inte med enkelt import pga js-filer i chai
+
+import * as chaiModule from "chai";
 import chaiHttp from "chai-http";
-import {server} from "../app.mjs"; // det finns inte defoult export
-//import documents from "../remoteDocs.mjs"
+import {server} from "../app.mjs";
+
+
 
 const chai = chaiModule.use(chaiHttp);
 

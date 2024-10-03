@@ -1,10 +1,9 @@
 import 'dotenv';
 import 'dotenv/config';
-//process.env.NODE_ENV === 'test' ? process.env.TEST_PORT :
-process.env.NODE_ENV != 'test'
+
 // Default to 3000 if PORT is undefined
 //port fot test is TEST_PORT
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 
 import express from 'express';

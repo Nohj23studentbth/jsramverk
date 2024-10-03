@@ -98,8 +98,8 @@ const mongoDocs = {
     addNew: async function addNew() {
         const remoteMongo = await mongoDb.remoteMongo();
         const data = {
-            title: "unnamed",
-            content: ""
+            title: "New document",
+            content: "New content"
         };
         try {
             console.log("try to insert doc")

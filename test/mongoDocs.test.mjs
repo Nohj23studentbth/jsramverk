@@ -1,5 +1,6 @@
 /* global it describe */
 process.env.NODE_ENV = 'test';
+process.env.PORT = 4000;
 
 import { expect } from 'chai';
 import sinon from 'sinon';
@@ -10,6 +11,12 @@ describe('MongoDocs', () => {
     let sandbox;
     let mockCollection;
     let mockClient;
+
+    before((done) => {
+        // Set the test port to 4000 using environment variable
+        process.env.PORT = 4000;
+        done();
+      });
 
     beforeEach(() => {
         // Skapa en sandbox för sinon
