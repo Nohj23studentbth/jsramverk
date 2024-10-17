@@ -4,7 +4,7 @@ import Unregister from './Unregister';
 import utils from '../utils.mjs';
 
 interface LoginProps {
-    onLoginSuccess: () => void;  // Callback function to notify App when login is successful
+    onLoginSuccess: () => void; // Callback to notify when login is successful
 }
 
 function Login({ onLoginSuccess }: LoginProps) {
@@ -14,57 +14,55 @@ function Login({ onLoginSuccess }: LoginProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(''); // Reset error state before submission
 
-        try{
-            alert("post your login")
-            const result = await utils.processRoute('POST', "/auth/login", 
-                { 
-                    username: username, 
-                    password: password 
-                }
-                );
-            if(result.status === 200){
-                localStorage.setItem("token", result.result.token);
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-                onLoginSuccess();  // Call callback to notify App of successful login
-                alert("Login successful"); 
+        try {
+            const result = await utils.processRoute('POST', '/auth/login', { username, password });
+            
+            if (result.status === 200) {
+                localStorage.setItem('token', result.result.token);
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                onLoginSuccess(); // Notify parent component of successful login
             } else {
-                alert("User name or password is not correctr. New user? Sign in.");
+                setError('Incorrect username or password. New user? Please register.');
             }
         } catch (e) {
-            alert("Login failed");
+            setError('Login failed. Please try again later.');
         }
-    }
-
+    };
 
     return (
-        <div className="loginform">
+        <div className="login-form-container">
             <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    name="name"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required 
-                />
-                <input
-                    type="text"
-                    name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required 
-                />
-                <button type="submit">Login</button>
+            <form onSubmit={handleSubmit} className="login-form">
+                <div className="input-group">
+                    <input
+                        type="email"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+                </div>
+                <div className="input-group">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="submit-btn">Login</button>
+                {error && <p className="error-message">{error}</p>}
             </form>
-            {error && <p>{error}</p>}
-            <Register onLoginSuccess={onLoginSuccess} />
-            <Unregister />
+            <div className="auth-options">
+                <Register onLoginSuccess={onLoginSuccess} />
+                <Unregister />
+            </div>
         </div>
     );
-};
+}
 
 export default Login;
