@@ -49,17 +49,27 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
     // }
   
 
+    const [username, setUsername] = useState(localStorage.getItem('username'));
+    const [passwod, setPasswod] = useState(localStorage.getItem('passwod'));
+
     const handleSubmitAndClose = async (event: React.FormEvent) => {
         event.preventDefault(); // Prevent page refresh
         setIsSubmitting(true);  // Set the submitting state to true (optional)
 
         // Updated document object
-        const updatedDoc = { id, title, content };
+        const body = {
+                        username: username, 
+                        id, 
+                        title, 
+                        content
+                    };
 
         try {
             // Submit the document update to the backend
-            await utils.processRoute('PUT', `/update`, updatedDoc);
-            console.log('Document updated successfully');
+            await utils.processRoute('PUT', 
+                                        `/data/update`, 
+                                        body);
+            console.log('Document updated successfully', body);
 
             // After the submission, go back to the list
             handleClose();

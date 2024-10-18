@@ -1,29 +1,17 @@
 <%- include('includes/header'); %>
 
 <!-- If there is a document, show its title and make it a clickable link to the doc-->
-<% if (doc) { %>
-    <h2>Document: <%= doc.title ? doc.title : 'No Title' %></h2>
-    <form method="POST" action="/sql/doc?_method=PUT" class="new-doc">
-        <input type="hidden" name="id" value="<%= doc.id %>">
-        <label for="title">Title</label>
-        <input type="text" name="title" value="<%= doc.title %>" />
+
+    <h2>Loga in</h2>
+    <form method="POST" action="" class="new-doc">
+        <input type="hidden" name="id" value="">
+        <label for="user_name">Enter user name</label>
+        <input type="email" name="user_name" value="" placeholder="Enter your user name" />
     
-        <label for="content">Content</label>
-        <textarea name="content"><%= doc.content %></textarea>
+        <label for="password">password</label>
+        <input type="test" name="password" value="" placeholder="Enter password"/>
     
         <input type="submit" value="Uppdatera" />
     </form>   
-<% } else { %>
-    <h2>New Document</h2>
-    <form method="POST" action="/sql/doc" class="new-doc">
-        <label for="title">Title</label>
-        <input type="text" name="title" value="" />
-
-        <label for="content">Content</label>
-        <textarea name="content"></textarea>
-
-        <input type="submit" value="Spara" />
-    </form>
-<%}%>
 
 <%- include('includes/footer'); %>

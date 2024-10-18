@@ -16,7 +16,7 @@ interface AppMainProps {
 function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelectedIndex }: AppMainProps) {
     // Load documents on component mount
     useEffect(() => {
-        reloadDocuments(); // Call the passed-in function to load documents
+        //reloadDocuments(); // Call the passed-in function to load documents
     }, [reloadDocuments]);
 
     // Handle loading state
@@ -31,7 +31,8 @@ function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelect
             <AppArticle documents={documents} 
                         reloadDocuments={reloadDocuments} 
                         selectedIndex={selectedIndex} 
-                        setSelectedIndex={setSelectedIndex} />
+                        setSelectedIndex={setSelectedIndex} 
+                       />
         </div>
     );
 }

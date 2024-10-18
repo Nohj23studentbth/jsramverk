@@ -4,6 +4,11 @@
   "description": "Starter project for DV1677 JSRamverk",
   "main": "app.mjs",
   "type": "module",
+  "nodemonConfig": {
+    "delay": "2500",
+    "watch": ["app.mjs", "routes/", "models/"],
+    "ext": "js,mjs,json"
+  },
   "scripts": {
     "test": "NODE_ENV=test jest --coverage --detectOpenHandles",
     "start": "nodemon app.js",
@@ -15,14 +20,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
+    "email-validator": "^2.0.4",
     "express": "^4.21.0",
+    "hat": "^0.0.3",
+    "jsonwebtoken": "^9.0.2",
     "method-override": "^3.0.0",
     "mongodb": "^6.9.0",
+    "mongoose": "^8.7.1",
     "morgan": "^1.10.0",
     "node-html-parser": "^1.1.12",
     "nodemon": "^3.1.7"

@@ -1,38 +1,40 @@
 import express from 'express';
-import documents from '../docs/remoteDocs.mjs';
-
+import mongoDocs from '../docs/remoteDocs.mjs';
 
 const router = express.Router();
 
 //parse JSON bodies
 router.use(express.json());
 
-// get all dcuments as JSON
-router.get("/", async(req, res) => {
-    console.log("use get to get docs")
+// get all dcuments from a user as JSON
+router.get("/:user",async(req, res) => {
+    const user = req.params.user;
     try {
-        const collection = await documents.getAll();
-        res.json({ documents: collection });
+        const docs = await mongoDocs.userDocuments(user);
+        res.json(docs);
+        
     } catch (error) {
-        res.json({ error: error });
-    };
+        res.status(500).json({ message: 
+            'Error fetching documents at backend/routes/mongoREmote.mjs' });
+    }
 });
 
 // add an new unnamed document
 router.post('/', async (req, res) => {
-    try {
-        const result = await documents.addNew();
-        res.json({ result });
-    } catch (error) {
-        res.json({ error: error });
-    }
+    const {username, password} = req.body
+        try {
+            const result = await mongoDocs.newDocument(username);
+            res.json({ result });
+        } catch (error) {
+            res.json({ error: error });
+        }
 });
 
 // update a document
 router.put('/update', async (req, res) => {
-    const { id, title, content } = req.body;
+    const {username, id, title, content } = req.body;
     try {
-        const result = await documents.updateOne(id, title, content);
+        const result = await mongoDocs.updateDocument(username, id, title, content);
         res.json({ result });
     } catch (error) {
         res.status(500).json({ message: 'Error updating document bu put route', error });
@@ -42,8 +44,9 @@ router.put('/update', async (req, res) => {
 // remove a document
 router.delete('/delete/:id', async (req, res) => {
     const id = req.params.id;
+    const {username, password} = req.body;
     try {
-        const result = await documents.removeById(id);
+        const result = await mongoDocs.removeDocument(id, username, password);
         res.json({ result });
     } catch (error) {
         res.json({ error: error });

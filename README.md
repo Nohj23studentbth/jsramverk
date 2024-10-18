@@ -385,3 +385,9 @@ Updaterar `node.js.yml` med
 
 
 ### Arbetar med VIdareutveckling/Autentisering
+
+Ändrar databasschema. Det är sparad i `backend/db/mongo/databas_shema.json`.
+
+Uppdaterar funktionalitet, att user kan bifoga, updatera och ta bort dokument.
+
+Nu återstå det: skaffa nya users och logga in.....

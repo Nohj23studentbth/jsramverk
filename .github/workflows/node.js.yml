@@ -13,7 +13,7 @@ env:
   # JWT_SECRET: "DUMMYSECRETFORTESTINGJWT12345678"
   ATLAS_USERNAME: "oleg22"
   ATLAS_PASSWORD: DEyTL0mOhfjdcK8g"
-  LOCAL_DSN: "mongodb://localhost:27017"
+  LOCAL_DSN: "mongodb://localhost:27017/test"
   DB_CLUSTER: "texteditor"
   DB_NAME: "docs"
   COLLECTION_NAME: "document"
