@@ -21,11 +21,17 @@ router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
-        const user = new User({ username, password: hashedPassword });
-        await userFunctions.saveUser(user);
-        res.status(201).json({ message: 'User registered successfully' });
+        const isMatch = await userFunctions.getUser(username);
+        console.log("found a user ", isMatch)
+        if(isMatch) {   
+            return res.status(501);
+        } else {
+            const user = new User({ username, password: hashedPassword });
+            await userFunctions.saveUser(user);
+            return res.status(201);
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Error registering user', error });
+        return res.status(500);
     }
 });
 
@@ -34,10 +40,10 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await userFunctions.getUser(username);
-        if (!user) return res.status(400).json({ message: 'Invalid username or password' });
+        if (!user) return res.status(400).send({ message: 'Invalid username or password' });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: 'Invalid username or password' });
+        if (!isMatch) return res.status(400).send({ message: 'Invalid username or password' });
 
         // Generate JWT token
         const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });

@@ -8,6 +8,7 @@ router.use(express.json());
 
 // get all dcuments from a user as JSON
 router.get("/:user",async(req, res) => {
+    console.log("use GET in MongoRemote")
     const user = req.params.user;
     try {
         const docs = await mongoDocs.userDocuments(user);
@@ -21,6 +22,7 @@ router.get("/:user",async(req, res) => {
 
 // add an new unnamed document
 router.post('/', async (req, res) => {
+    console.log("user POST in MongoRemote")
     const {username, password} = req.body
         try {
             const result = await mongoDocs.newDocument(username);

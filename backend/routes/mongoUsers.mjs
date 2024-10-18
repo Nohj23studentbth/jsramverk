@@ -37,7 +37,6 @@ router.use(express.json());
 router.get("/:user",async(req, res) => {
     const user = reg.params.user;
     try {
-        console.log("try in the GET docs/")
         const docs = await users.getUser(user);
         // res = {
         //     status: 200,

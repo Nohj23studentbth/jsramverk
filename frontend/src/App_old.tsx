@@ -6,9 +6,13 @@ import AppMain from "./components/AppMain";
 import Login from './components/Login';
 import utils from './utils.mjs';
 import Document from './functions/interfase'; // import interface for object Document
+import { socket } from './socket.mjs';
 
 function App() {
-
+    //socet variables
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [fooEvents, setFooEvents] = useState([]);
+    
     const [documents, setDocuments] = useState<Document[]>([]); // Initialize state for documents
     const [loading, setLoading] = useState(true); // Initialize loading state
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null); // Initialize selected index

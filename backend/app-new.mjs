@@ -1,19 +1,23 @@
 import 'dotenv/config';
-
-let port = process.env.NODE_ENV === 'test'? process.env.TEST_PORT : process.env.PORT;
-
 import express from 'express';
+// import { json, urlencoded } from 'body-parser';
+// import { join } from 'path';
+import morgan from 'morgan';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
-import cors from 'cors';
-import morgan from 'morgan';
-//import methodOverride from 'method-override';
-
-import mongoRemote from "./routes/mongoRemote.mjs";
-import authRoutes from "./routes/auth_user.mjs";
-//import authRoutes, { authenticateToken } from './routes/auth.js'; // import authentication route
 
 const app = express();
+
+import auth from "./routes/auth_user.mjs";
+import users from "./routes/users.mjs";
+//import data from "./routes/data.mjs";
+import data from './routes/mongoRemote.mjs';
+
+//import { checkAPIKey } from "./models/auth.js";
+import authModels from "./models/auth.mjs";
+let port = process.env.NODE_ENV === 'test'? process.env.TEST_PORT : process.env.PORT;
+
 
 app.use(cors()); // tillåter nå app från olika platformer. Det finns mäjlighet att presissera varifån appen can nås
 
@@ -23,13 +27,6 @@ app.use(bodyParser.json());
 app.disable('x-powered-by');
 
 app.set("view engine", "ejs");
-
-// middelwear showing working route
-app.use((req, res, next) => {
-  console.log(req.method);
-  console.log(req.path);
-  next();
-});
 
 app.use(express.static(path.join(process.cwd(), "public")));
 
@@ -44,13 +41,13 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
 
-app.use('/data', mongoRemote); // import routes using remote mongoDB
-app.use('/auth', authRoutes); // Use auth routes under '/auth'
+// app.all('*', authModels.checkAPIKey);
 
-// // Protect the documents route
-// app.get('/documents', authenticateToken, async (req, res) => {
-//   const documents = await Document.find(); // Make sure you define Document schema properly
-//   res.json(documents);
+//app.use("/users", users);
+app.use("/data", data);
+app.use("/auth", auth);
+// app.use('/hoy', async (reg, res) =>{
+//   res.send("HOY Hoppolapoy!");
 // });
 
 // Add routes for 404 and error handling
@@ -78,11 +75,9 @@ app.use((err, req, res, next) => {
       ]
   });
 });
+
 const server = app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+    console.log('auth api listening on port ' + port);
 });
 
-
-// ES module-style code (Correct)
-export { app, server};
-
+export default server;

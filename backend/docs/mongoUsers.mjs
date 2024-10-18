@@ -71,7 +71,7 @@ const mongoUsers = {
             if (user){
                 return user;
             } else {
-                throw new Error("No users found");
+                return null;
             }
         } catch (error) {
             console.error("Error in getUser:", error);  // Log the error

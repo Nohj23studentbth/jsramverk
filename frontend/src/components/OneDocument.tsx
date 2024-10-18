@@ -1,7 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+//<<<<<<< HEAD
+//import React, { useEffect, useRef, useState } from 'react';
+//=======
+import React, { useState, useEffect, useRef } from 'react';
+import {socket} from "../socket.mjs";
+//>>>>>>> Socket
 import utils from '../utils.mjs';
 // import io from "socket.io-client"; 
 // import { Socket } from "socket.io-client"; 
+
 
 // interfase for element
 interface OneDocumentProps {
@@ -18,6 +24,7 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
     const [title, setTitle] = useState(intialTitle);
     const [content, setContent] = useState(initialContent);
     const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
+//<<<<<<< HEAD
 
     // const socket = useRef<typeof Socket | null>(null);
 
@@ -49,8 +56,33 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
     // }
   
 
+// =======
+// >>>>>>> Socket
     const [username, setUsername] = useState(localStorage.getItem('username'));
-    const [passwod, setPasswod] = useState(localStorage.getItem('passwod'));
+    //const [passwod, setPasswod] = useState(localStorage.getItem('passwod'));
+
+    useEffect(() => {
+       // Connect the socket when the component mounts
+       socket.connect();
+
+    //    // Listen for messages from the server
+    //    socket.on('message', (data) => {
+    //        console.log('Received message:', data);
+    //    });
+
+       // Listen for "content" event to update title and content from the server
+       socket.on("content", ({ title, content }) => {
+           setTitle(title);
+           setContent(content);
+       });
+
+       // Clean up the socket connection and listeners when the component unmounts
+       return () => {
+           //socket.off('message'); // Remove the listener
+           socket.off('content'); // Remove the content listener
+           socket.disconnect(); // Disconnect the socket
+       };
+    }, []);
 
     const handleSubmitAndClose = async (event: React.FormEvent) => {
         event.preventDefault(); // Prevent page refresh
@@ -79,6 +111,7 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
             setIsSubmitting(false);  // Reset submitting state (optional)
         }
     };
+
     // element
     return (
         <> {/* wrap all in the one eleemnt */}
@@ -104,9 +137,6 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
                 <button type="submit" value="Submit" className='btn btn-primary change-collection' disabled={isSubmitting}>
                     {isSubmitting ? 'Submitting...' : 'Save and close'}
                 </button>
-                {/* <button type="reset" value="Clear" className='btn btn-primary change-collection' onClick={clear}>
-                    
-                </button> */}
             </form>
             <h1>{title}</h1>
             <p>{content}</p>

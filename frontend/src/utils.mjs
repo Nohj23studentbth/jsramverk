@@ -37,10 +37,9 @@ const utils = {
             const response = await fetch(url, options);
             console.log("Respons of the processRoute", response)
             if (!response.ok) {
-                console.log(`HTTP error! Status: ${response.status}`);
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                console.log (response)
+                return response
             }
-
             const result = await response.json();
             console.log(result)
             return {

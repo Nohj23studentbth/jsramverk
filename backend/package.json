@@ -6,12 +6,16 @@
   "type": "module",
   "nodemonConfig": {
     "delay": "2500",
-    "watch": ["app.mjs", "routes/", "models/"],
+    "watch": [
+      "app.mjs",
+      "routes/",
+      "models/"
+    ],
     "ext": "js,mjs,json"
   },
   "scripts": {
     "test": "NODE_ENV=test jest --coverage --detectOpenHandles",
-    "start": "nodemon app.js",
+    "start": "nodemon app.mjs",
     "clean": "rm -rf node_modules package-lock.json",
     "coverage": "jest --coverage",
     "eslint": "eslint"
@@ -35,7 +39,8 @@
     "mongoose": "^8.7.1",
     "morgan": "^1.10.0",
     "node-html-parser": "^1.1.12",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.25.7",
