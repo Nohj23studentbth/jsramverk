@@ -17,21 +17,78 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 const router = express.Router();
 
 // User registration route
+// router.post('/register', async (req, res) => {
+//     const { username, password } = req.body;
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     try {
+//         console.time("DB query time");
+//         const isMatch = await userFunctions.getUser(username);
+//         console.timeEnd("DB query time");
+//         if(isMatch.username) {
+//            return res.status(401);
+           
+//         } else {
+//             const user = new User({ username, password: hashedPassword });
+//             const response = await userFunctions.saveUser(user);
+//             console.log(response)
+            
+//             return response;
+//         }
+//     } catch (error) {
+       
+//         return res.status(500);
+//     }
+// });
+
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
-        const isMatch = await userFunctions.getUser(username);
-        console.log("found a user ", isMatch)
-        if(isMatch) {   
-            return res.status(501);
-        } else {
-            const user = new User({ username, password: hashedPassword });
-            await userFunctions.saveUser(user);
-            return res.status(201);
+        // // Log database query time for performance diagnostics
+        // console.time("DB query time");
+
+        // Check if the user already exists
+        const existingUser = await userFunctions.getUser(username);
+
+        //console.timeEnd("DB query time");
+
+        // If the user already exists, return a 409 Conflict status with a descriptive message
+        if (existingUser) {
+            return res.status(409).json({
+                ok: false,
+                message: 'User already exists',
+            });
         }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // If the user does not exist, create a new user
+        const newUser = new User({
+            username,
+            password: hashedPassword,
+        });
+
+        // Save the user to the database
+        const saveResponse = await userFunctions.saveUser(newUser);
+
+        // Return success response
+        return res.status(201).json({
+            ok: true,
+            message: 'User registered successfully',
+            data: saveResponse,
+        });
+
     } catch (error) {
-        return res.status(500);
+        // Handle any server or database errors
+        console.error("Error in /register:", error);
+
+        // Send a 500 error with a specific error message
+        return res.status(500).json({
+            ok: false,
+            message: 'Server error, please try again later.',
+            error: error.message,  // Optional, but useful for debugging
+        });
     }
 });
 
@@ -40,9 +97,16 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await userFunctions.getUser(username);
-        if (!user) return res.status(400).send({ message: 'Invalid username or password' });
+       
+        if (!user) {
+
+            
+            return res.status(400).send({ message: 'No username found' });
+        }
+
 
         const isMatch = await bcrypt.compare(password, user.password);
+        
         if (!isMatch) return res.status(400).send({ message: 'Invalid username or password' });
 
         // Generate JWT token

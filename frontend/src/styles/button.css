@@ -12,7 +12,7 @@ body div.main div.article form button.change-collection {
     text-decoration: none; /* Remove underline from the link */
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition effects */
     cursor: pointer; /* Pointer cursor on hover */
-    margin: 10px 0 20px 0;
+    margin: 10px 10px 20px 10px;
 }
 
 header.header div button.change-collection:hover,
@@ -31,4 +31,19 @@ body div.main div.article form button.btn.btn-primary.change-collection {
     color: rgb(48, 57, 66);
     justify-self: end;
     width: 200px;
+}
+
+#root .auth-button .auth {
+    background-color: #d8dadd; /* Even darker blue on active (click) */
+    transform: scale(0.95);
+    border: none; /* Remove the default border */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 10px 20px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center the text inside the button */
+    text-decoration: none; /* Remove underline from the link */
+    transition: background-color 0.5s ease, transform 0.5s ease; /* Smooth transition effects */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin: 10px 0 20px 0;
+    font-size: 1.5em;
+    color: red;
 }

@@ -69,18 +69,26 @@ function AppHeader({
                 <>
                     <div>
                         {selectedIndex === null ? (
+                        <>
                             <button className="change-collection" onClick={addDocument}>
                                 Create document
                             </button>
+                            <button className="change-collection" onClick={logOut}>
+                                Logout
+                            </button>
+                        </>
                         ) : (
+                        <>
                             <button className="change-collection" onClick={deleteDocument}>
                                 Remove document
                             </button>
+                            <button className="change-collection" onClick={logOut}>
+                                Logout
+                            </button>
+                        </>
                         )}
                     </div>
-                    <button className="change-collection" onClick={logOut}>
-                        Logout
-                    </button>
+                    
                 </>
             )}
         </header>

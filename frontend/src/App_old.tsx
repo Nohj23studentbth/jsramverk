@@ -3,7 +3,7 @@ import AppFooter from "./components/includes/AppFooter";
 import AppHeader from "./components/includes/AppHeader";
 import ErrorBoundary from './components/includes/ErrorBoundary';
 import AppMain from "./components/AppMain";
-import Login from './components/Login';
+import Auth from './components/Auth';
 import utils from './utils.mjs';
 import Document from './functions/interfase'; // import interface for object Document
 import { socket } from './socket.mjs';
@@ -75,6 +75,8 @@ function App() {
     });
     
      useEffect(() => {
+        console.log("Token:", token);
+    console.log("Username:", username);
         if (token) {
             getDocuments(); // Load documents if the token exists
         }
@@ -111,7 +113,7 @@ function App() {
                     reloadDocuments={loadDocuments} 
                     selectedIndex={selectedIndex} 
                     setSelectedIndex={setSelectedIndex} 
-                />) : (<Login onLoginSuccess={handleLoginSuccess} />)}
+                />) : (<Auth onLoginSuccess={handleLoginSuccess} />)}
             </ErrorBoundary>
             <AppFooter />
         </>

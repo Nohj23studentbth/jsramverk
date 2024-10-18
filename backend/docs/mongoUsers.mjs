@@ -82,10 +82,12 @@ const mongoUsers = {
     },
 
     saveUser: async function saveUser(user) {
+        console.log("by save user ", user)
         let db;
         try {
             db = await getDb.connect();
             const respons = await db.collection.insertOne(user);
+            return respons;
         } catch (error) {
             console.error("Error in getUser:", error);  // Log the error
             throw new Error("Database error: " + error.message);  // Re-throw or handle error

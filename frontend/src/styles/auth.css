@@ -1,0 +1,15 @@
+body #root .auth-button {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3em;
+    justify-content: space-between;
+    margin: 9em 17em;
+}
+
+#root .auth-options {
+    display: grid;
+    grid-row: 2;
+    grid-column: span 2;
+    grid-template-rows: 5px 1fr;
+
+}

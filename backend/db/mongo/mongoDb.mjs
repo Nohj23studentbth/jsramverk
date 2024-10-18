@@ -27,6 +27,8 @@ const database = {
 
         await client.connect();
         try {
+            console.log("dbName: ", process.env.DB_NAME)
+            console.log("colName: ", process.env.COLLECTION_NAME)
             const db = client.db(process.env.DB_NAME);
             const users = db.collection(process.env.COLLECTION_NAME);
             return {db:db, client: client, collection: users};

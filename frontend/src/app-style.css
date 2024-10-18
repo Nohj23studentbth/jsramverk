@@ -8,6 +8,5 @@
 @import url('styles/footer.css');
 @import url('styles/header.css');
 @import url('styles/button.css');
-@import url('styles/login.css');
-@import url('styles/register.css');
-@import url('styles/unregister.css');
+@import url('styles/log_form.css');
+@import url('styles/auth.css');
