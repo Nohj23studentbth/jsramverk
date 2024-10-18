@@ -24,51 +24,13 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
     const [title, setTitle] = useState(intialTitle);
     const [content, setContent] = useState(initialContent);
     const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
-//<<<<<<< HEAD
 
-    // const socket = useRef<typeof Socket | null>(null);
-
-    // useEffect(() => {
-    //     socket.current = io(SERVER_URL);
-  
-    //     socket.current.on("content", (title: React.SetStateAction<string>, content: React.SetStateAction<string>) => {
-    //         setContent(content); // Assuming 'data' has a property 'content'
-    //         setTitle(title); // Assuming 'data' has a property 'title'
-    //     });
-  
-    //     return () => {
-    //         // Check if socket.current is not null before disconnecting
-    //         if (socket.current) {
-    //             socket.current.disconnect();
-    //         }
-    //     };
-    //   }, []);
-
-    // function clear() {
-    //     setTitle("");
-    //     setContent("");
-    // }
-    // function handleContentChange(e: { target: { value: any; }; }) {
-    //     const value = e.target.value;
-    //     if (socket.current) {
-    //         socket.current.emit("content", value);
-    //     }
-    // }
-  
-
-// =======
-// >>>>>>> Socket
     const [username, setUsername] = useState(localStorage.getItem('username'));
     //const [passwod, setPasswod] = useState(localStorage.getItem('passwod'));
 
     useEffect(() => {
        // Connect the socket when the component mounts
        socket.connect();
-
-    //    // Listen for messages from the server
-    //    socket.on('message', (data) => {
-    //        console.log('Received message:', data);
-    //    });
 
        // Listen for "content" event to update title and content from the server
        socket.on("content", ({ title, content }) => {
@@ -101,7 +63,6 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
             await utils.processRoute('PUT', 
                                         `/data/update`, 
                                         body);
-            console.log('Document updated successfully', body);
 
             // After the submission, go back to the list
             handleClose();

@@ -19,8 +19,8 @@ const utils = {
      */
     processRoute : async function processRoute(passedMethod = 'GET', route = "/", body = null, headers = {}) {
         const url = backendUrl + route;
-        console.log("route: ",route)
-        console.log(" url: ",url)
+        // console.log("route: ",route)
+        // console.log(" url: ",url)
 
         const defaultHeaders = { 'Content-Type': 'application/json'};
         const mergeHeaders = {...defaultHeaders, ...headers};
@@ -33,22 +33,22 @@ const utils = {
 
         try {
             // Pass the URL and options to fetch
-            console.log(`Fetching data from URL: ${url} with options:`, options)
+            //console.log(`Fetching data from URL: ${url} with options:`, options)
             const response = await fetch(url, options);
-            console.log("Respons of the processRoute", response)
+            //console.log("Respons of the processRoute", response)
             if (!response.ok) {
                 console.log (response)
                 return response
             }
             const result = await response.json();
-            console.log(result)
+            //console.log(result)
             return {
                 ok: response.ok,
                 status: response.status,
                 result: result
             };
         } catch (error) {
-            console.log('Failed to fetch documents in processRoute.processRoute:', error);
+            //console.log('Failed to fetch documents in processRoute.processRoute:', error);
             return error;
         }
     },

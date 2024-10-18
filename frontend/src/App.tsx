@@ -29,11 +29,9 @@ function App() {
         
         if (storedUsername) {
             setUsername(storedUsername);
-            console.log("Stored Username:", storedUsername);
         }
         if (storedToken) {
             setToken(storedToken);
-            console.log("Stored Token:", storedToken);
         }
     }, []);
 
@@ -55,14 +53,11 @@ function App() {
     const getDocuments = (async() => {
         if (localStorage.getItem('username')) {
             setUsername(localStorage.getItem('username'));
-            console.log("Stored Username:", username);
         }
         if (localStorage.getItem('token')) {
             setToken(localStorage.getItem('token'));
-            console.log("Stored Token:", localStorage.getItem('token'));
         }
         if (!token) return; // Prevent calling if username is not set
-        console.log(username)
         setLoading(true); // Start loading
 
         try {
@@ -75,8 +70,6 @@ function App() {
     });
     
      useEffect(() => {
-        console.log("Token:", token);
-    console.log("Username:", username);
         if (token) {
             getDocuments(); // Load documents if the token exists
         }

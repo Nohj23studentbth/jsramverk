@@ -28,7 +28,6 @@ function Auth({ onLoginSuccess }: AuthProps) {
 
         try {
             const response = await utils.processRoute(method, route, { "username":username, "password":password });
-            console.log(response)
 
             if (response.ok) {
                 if (route === '/auth/login') {
