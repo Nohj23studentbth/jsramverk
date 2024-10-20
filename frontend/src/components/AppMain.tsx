@@ -6,6 +6,7 @@ import Document from '../functions/interfase';
 
 // element properties
 interface AppMainProps {
+    username: string | null,
     documents: Document[];
     loading: boolean;
     reloadDocuments: () => void;
@@ -13,7 +14,7 @@ interface AppMainProps {
     setSelectedIndex: (index: number | null) => void; // Function to update selectedIndex in parent
 }
 
-function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelectedIndex }: AppMainProps) {
+function AppMain({username, documents, loading, reloadDocuments, selectedIndex, setSelectedIndex }: AppMainProps) {
     // Load documents on component mount
     useEffect(() => {
         //reloadDocuments(); // Call the passed-in function to load documents
@@ -28,7 +29,8 @@ function AppMain({ documents, loading, reloadDocuments, selectedIndex, setSelect
         <div className="main">
             <ArticleHead documents={documents}
             selectedIndex={selectedIndex} />
-            <AppArticle documents={documents} 
+            <AppArticle usersname={username}
+                        documents={documents} 
                         reloadDocuments={reloadDocuments} 
                         selectedIndex={selectedIndex} 
                         setSelectedIndex={setSelectedIndex} 

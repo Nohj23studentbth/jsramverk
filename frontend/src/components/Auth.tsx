@@ -26,40 +26,58 @@ function Auth({ onLoginSuccess }: AuthProps) {
         setError(''); // Reset error state before submission
         setMessage(''); // Reset message state before submission
 
+
+
         try {
             const response = await utils.processRoute(method, route, { "username":username, "password":password });
 
+            console.log(response)
             if (response.ok) {
                 if (route === '/auth/login') {
                     localStorage.setItem('token', response.result.token);
                     localStorage.setItem('username', username);
                     localStorage.setItem('password', password);
+                    alert("You are logged in!");
                     onLoginSuccess(); // Notify parent component of successful login
                 } else if (route === '/auth/register') {
                     setMessage('User successfully registered. Please log in!');
+                    alert('User successfully registered. Please log in!');
                     handleFormChange('login'); // Switch to login form after successful registration
                 } else if (route === '/auth/unregister') {
                     localStorage.clear(); // Clear local storage on account removal
                     setMessage('User successfully removed. All your data are removed!');
+                    alert('User successfully removed. All your data are removed!');
                     handleFormChange('buttons'); // Go back to buttons after unregistration
                 }
             } else {
+                console.log("in Auth else of handleSabmit")
+                
+                console.error('Error:', response.message);
+                alert(response.message);
                 // Handle unsuccessful login and return to buttons
                 if (route === '/auth/login') {
-                    setError('Incorrect username or password. New user? Please register.');
+                    alert('Incorrect username or password. New user? Please register.');
+                    handleFormChange('buttons'); // Return to button selection
+                } else if (route === '/auth/deregister') {
+                    alert('Incorrect username or password.');
                     handleFormChange('buttons'); // Return to button selection
                 } else {
-                    setError('An error occurred. Please try again.');
+                    // setError('An error occurred. Please try again.');
+                    // alert('An error occurred. Please try again.');
+                    handleFormChange('buttons');
                 }
             }
         } catch (e) {
-            setError(`Connection to database failed, please try later. Error: ${e}`);
+            setError(`Catched error in HandleSubmit. Connection to database failed, please try later. Error: ${e}`);
+            alert(error);
+            handleFormChange('buttons');
         }
     };
 
     return (
         <>
             {currentForm === 'buttons' && (
+                
                 <div className='auth-button'>
                     <button className="auth" onClick={() => handleFormChange('login')}>Login</button>
                     <button className="auth" onClick={() => handleFormChange('register')}>Register</button>

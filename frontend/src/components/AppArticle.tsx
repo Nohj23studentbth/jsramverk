@@ -3,7 +3,7 @@ import User from '../functions/interfase'; // import interface for object Docume
 import Document from '../functions/interfase'; 
 // element properties
 interface AppArticleProps {
-    //users: User[];
+    usersname:string | null;
     documents: Document[];
     //reloadUsers: () => void;
     reloadDocuments: () => void;
@@ -11,7 +11,7 @@ interface AppArticleProps {
     setSelectedIndex: (index: number | null) => void; // Function to update selectedIndex in parent
 }
 
-function AppArticle({ documents, reloadDocuments, selectedIndex, setSelectedIndex }: AppArticleProps) {
+function AppArticle({usersname, documents, reloadDocuments, selectedIndex, setSelectedIndex }: AppArticleProps) {
 
     // select document
     const handleSelect = (index: number) => { 
@@ -46,7 +46,8 @@ function AppArticle({ documents, reloadDocuments, selectedIndex, setSelectedInde
                 </ul>
             ) : ( // if a document is selected, render OneDocument component
                 
-                <OneDocument 
+                <OneDocument
+                    username={usersname}
                     id={documents[selectedIndex]._id}
                     title={documents[selectedIndex].title}
                     content={documents[selectedIndex].content}

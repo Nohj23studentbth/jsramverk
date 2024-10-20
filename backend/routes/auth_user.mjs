@@ -97,10 +97,12 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
         const user = await userFunctions.getUser(username);
+
+        console.log("user: ", user)
        
         if (!user) {
 
-            
+            console.log(user)
             return res.status(400).send({ message: 'No username found' });
         }
 

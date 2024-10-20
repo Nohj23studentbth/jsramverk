@@ -30,9 +30,6 @@ db.createCollection("users", {
                         "allowd_users": {
                             "bsonType": "array",
                             "description": "'allowd_users' is an array of strings and is not required",
-                            "items": {  // Define items for the 'allowd_users' array
-                                "bsonType": "string"
-                            }
                         }
                     }
                 }

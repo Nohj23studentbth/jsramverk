@@ -100,7 +100,8 @@ function App() {
             </ErrorBoundary>
             <ErrorBoundary>
             {token ?( 
-                <AppMain 
+                <AppMain
+                    username={username}
                     documents={documents} 
                     loading={loading} 
                     reloadDocuments={loadDocuments} 

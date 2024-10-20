@@ -37,8 +37,14 @@ const utils = {
             const response = await fetch(url, options);
             //console.log("Respons of the processRoute", response)
             if (!response.ok) {
-                console.log (response)
-                return response
+                const errorData = await response.json();
+                //console.error('Error:', errorData.message);  // Will print: 'No username found'
+             
+                return {
+                    ok: response.ok,
+                    status: response.status,
+                    message: errorData.message
+                };
             }
             const result = await response.json();
             //console.log(result)
@@ -48,7 +54,7 @@ const utils = {
                 result: result
             };
         } catch (error) {
-            //console.log('Failed to fetch documents in processRoute.processRoute:', error);
+            console.log('Failed to fetch documents in processRoute.processRoute:', error);
             return error;
         }
     },

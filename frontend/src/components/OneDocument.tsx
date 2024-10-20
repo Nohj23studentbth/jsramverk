@@ -1,16 +1,11 @@
-//<<<<<<< HEAD
-//import React, { useEffect, useRef, useState } from 'react';
-//=======
 import React, { useState, useEffect, useRef } from 'react';
 import {socket} from "../socket.mjs";
-//>>>>>>> Socket
 import utils from '../utils.mjs';
-// import io from "socket.io-client"; 
-// import { Socket } from "socket.io-client"; 
 
 
 // interfase for element
 interface OneDocumentProps {
+    username: string | null;
     id: string;
     title: string;
     content: string;
@@ -18,16 +13,13 @@ interface OneDocumentProps {
 }
 
 
-function OneDocument({ id, title: intialTitle, content: initialContent, handleClose }: OneDocumentProps) {
+function OneDocument({username, id, title: intialTitle, content: initialContent, handleClose }: OneDocumentProps) {
     const SERVER_URL = "http://localhost:3000";
     // declare variabels and function to change them
     const [title, setTitle] = useState(intialTitle);
     const [content, setContent] = useState(initialContent);
     const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
-
-    const [username, setUsername] = useState(localStorage.getItem('username'));
-    //const [passwod, setPasswod] = useState(localStorage.getItem('passwod'));
-
+    
     useEffect(() => {
        // Connect the socket when the component mounts
        socket.connect();
@@ -40,7 +32,7 @@ function OneDocument({ id, title: intialTitle, content: initialContent, handleCl
 
        // Clean up the socket connection and listeners when the component unmounts
        return () => {
-           //socket.off('message'); // Remove the listener
+           socket.off('message'); // Remove the listener
            socket.off('content'); // Remove the content listener
            socket.disconnect(); // Disconnect the socket
        };
