@@ -1,100 +1,215 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {socket} from "../socket.mjs";
-import utils from '../utils.mjs';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+import { Socket } from "socket.io-client";
+import AddComment from "./comment";
 
-
-// interfase for element
-interface OneDocumentProps {
-    username: string | null;
-    id: string;
-    title: string;
-    content: string;
-    handleClose: () => void;
+// Define the shape of formData and comments
+interface FormData {
+  title: string;
+  content: string;
 }
 
+interface Comment {
+  comment: string;
+  caret: number;
+  row: number;
+}
 
-function OneDocument({username, id, title: intialTitle, content: initialContent, handleClose }: OneDocumentProps) {
-    const SERVER_URL = "http://localhost:3000";
-    // declare variabels and function to change them
-    const [title, setTitle] = useState(intialTitle);
-    const [content, setContent] = useState(initialContent);
-    const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
-    
-    useEffect(() => {
-       // Connect the socket when the component mounts
-       socket.connect();
+interface ServerData {
+  data: FormData;
+}
 
-       // Listen for "content" event to update title and content from the server
-       socket.on("content", ({ title, content }) => {
-           setTitle(title);
-           setContent(content);
-       });
+interface SocketUpdateData {
+  title: string;
+  content: string;
+}
 
-       // Clean up the socket connection and listeners when the component unmounts
-       return () => {
-           socket.off('message'); // Remove the listener
-           socket.off('content'); // Remove the content listener
-           socket.disconnect(); // Disconnect the socket
-       };
-    }, []);
+function Document() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [formData, setFormData] = useState<FormData>({
+    title: "",
+    content: "",
+  });
+  const [caretPosition, setCaretPosition] = useState({ caret: 0, line: 0 });
+  const [comments, setComments] = useState<Comment[]>([]);
 
-    const handleSubmitAndClose = async (event: React.FormEvent) => {
-        event.preventDefault(); // Prevent page refresh
-        setIsSubmitting(true);  // Set the submitting state to true (optional)
+  const { id } = useParams<{ id: string }>(); // Explicit typing for useParams
+  const navigate = useNavigate();
 
-        // Updated document object
-        const body = {
-                        username: username, 
-                        id, 
-                        title, 
-                        content
-                    };
+  const currentPath =
+    process.env.NODE_ENV === "production"
+      ? "https://jsramverk-oleg22-g9exhtecg0d2cda5.northeurope-01.azurewebsites.net/"
+      : "http://localhost:3000";
 
-        try {
-            // Submit the document update to the backend
-            await utils.processRoute('PUT', 
-                                        `/data/update`, 
-                                        body);
+  const socketRef = useRef<Socket | null>(null); // Add type for socketRef
 
-            // After the submission, go back to the list
-            handleClose();
-        } catch (error) {
-            console.error('Failed to update document:', error);
-        } finally {
-            setIsSubmitting(false);  // Reset submitting state (optional)
+  const handelSocketUpdate = (update: string, data: SocketUpdateData) => {
+    const path = update === "socketJoin" ? data : data;
+
+    setFormData({
+      title: path.title,
+      content: path.content,
+    });
+  };
+
+  const handelSocketComment = (data: any) => {
+    if (data.comment) {
+      setComments((prevComments) => [
+        ...prevComments,
+        {
+          comment: data.comment,
+          caret: data.caretPosition.caret,
+          row: data.caretPosition.line,
+        },
+      ]);
+    } else {
+      setComments((prevComments) => [...prevComments, ...data]);
+    }
+  };
+
+  useEffect(() => {
+    socketRef.current = io(currentPath);
+    socketRef.current.emit("create", id);
+
+    socketRef.current.on("serverUpdate", (data: SocketUpdateData) =>
+      handelSocketUpdate("serverUpdate", data)
+    );
+
+    socketRef.current.on("socketJoin", (data: SocketUpdateData) =>
+      handelSocketUpdate("socketJoin", data)
+    );
+
+    socketRef.current.on("newComment", (data: any) => {
+      handelSocketComment(data);
+    });
+
+    fetch(`${currentPath}/docs/${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("An Error has occurred");
         }
+        return response.json();
+      })
+      .then((data: ServerData) => {
+        setFormData({
+          title: data.data.title || "",
+          content: data.data.content || "",
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setLoading(false);
+      });
+
+    return () => {
+      socketRef.current?.disconnect();
     };
+  }, [id]);
 
-    // element
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    socketRef.current?.emit("update", {
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${currentPath}/docs/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          ...formData,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleCarotMove = (e: React.MouseEvent<HTMLTextAreaElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    const value = target.value;
+    const caretPosition = target.selectionStart;
+    const lineNumber = value.substring(0, caretPosition).split("\n").length;
+
+    const caretPositionInLine =
+      lineNumber === 1
+        ? caretPosition
+        : caretPosition - (value.lastIndexOf("\n", caretPosition - 1) + 1);
+
+    setCaretPosition({ caret: caretPositionInLine, line: lineNumber });
+  };
+
+  if (loading) {
     return (
-        <> {/* wrap all in the one eleemnt */}
-            <form className='doc' onSubmit={handleSubmitAndClose}> {/* change when the form submitted */}
-                <input type='hidden'name="id" value={id} />
-                <input className='title'
-                    type="text"
-                    name="newTitle"
-                    value={title}
-                    onChange={(e) => 
-                        setTitle(e.target.value)}>
-                </input>
-                
-                <input className='content'
-                    type="text"
-                    name="newContent"
-                    value={content}
-                    onChange={(e) => 
-                        setContent(e.target.value)}>
-                </input>
+      <div className="loading">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
-                {/* Combined Submit and Back to List button */}
-                <button type="submit" value="Submit" className='btn btn-primary change-collection' disabled={isSubmitting}>
-                    {isSubmitting ? 'Submitting...' : 'Save and close'}
-                </button>
-            </form>
-            <h1>{title}</h1>
-            <p>{content}</p>
-            
-        </>
-)};
+  return (
+    <div className="document-bg">
+      <AddComment
+        caretPosition={caretPosition}
+        socketRef={socketRef}
+        newComment={handelSocketComment}
+      />
+      <form onSubmit={handleSubmit} className="new-doc">
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          className="title-input"
+          value={formData.title}
+          onChange={handleChange}
+        />
 
-export default OneDocument;
+        <input type="hidden" name="id" value={id} />
+
+        <label htmlFor="content">Innehåll</label>
+        <textarea
+          name="content"
+          className="content-input input-width"
+          value={formData.content}
+          onChange={handleChange}
+          onClick={handleCarotMove}
+        />
+
+        <input className="button-create" type="submit" value="Uppdatera" />
+      </form>
+      <div>
+        {comments.map((comment, index) => (
+          <div className="comment" key={index}>
+            <h3>
+              Rad {comment.row} | char {comment.caret}
+            </h3>
+            <p>{comment.comment}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Document;
