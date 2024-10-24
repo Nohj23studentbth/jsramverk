@@ -9,6 +9,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
+import roomState from "./models/socket.mjs";
+import comments from "./models/comments.mjs";
+
+//import comments from "comments.mjs"; // For comments sockets in future
 
 
 import mongoRemote from "./routes/mongoRemote.mjs";
@@ -24,24 +28,67 @@ import RootQueryType from "./graphql/root.mjs";
 
 const app = express();
 const httpServer = createServer(app);
+
 const io = new Server(httpServer, {
-  autoConnect: false,
   cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "DELETE", "PUT"],
-  }
+    // origin: ["http://localhost:3000", "https://www.student.bth.se/"],
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
-io.on('connection', function(socket) {
-    console.log(socket.id);
-    // socket.on("content", function (data) {
-    //     console.log(data);
+let timeout;
 
-    //     io.emit("content", data);
+io.on("connection", (socket) => {
+  console.log("New client connected:", socket.id);
 
-    //     // Spara till databas och göra annat med data
-    // });
-})
+  socket.on("create", async function (room) {
+    socket.join(room);
+
+    socket.currentRoom = room;
+    console.log("Joined the room:", room);
+
+    const docComments = await comments.getComments(socket.currentRoom);
+
+    socket.emit("newComment", docComments);
+
+    if (socket.rooms.has(room)) {
+      const data = await roomState.getRoomState(room);
+      if (data) {
+        socket.emit("socketJoin", data);
+      }
+    }
+  });
+
+  socket.on("update", (data) => {
+    socket.to(socket.currentRoom).emit("serverUpdate", data);
+
+    clearTimeout(timeout);
+
+    timeout = setTimeout(function () {
+      roomState.updateRoomState(socket.currentRoom, data);
+    }, 2000);
+  });
+
+  socket.on("comment", (data) => {
+    comments.addComment(
+      socket.currentRoom,
+      data.comment,
+      data.caretPosition.caret,
+      data.caretPosition.line
+    );
+
+    socket.to(socket.currentRoom).emit("newComment", data);
+  });
+
+  socket.on("disconnect", async () => {
+    console.log("Client disconnected:", socket.id);
+    const users = io.sockets.adapter.rooms.get(socket.currentRoom);
+    if (users === undefined) {
+      roomState.clearRoomState(socket.currentRoom);
+    }
+  });
+});
 
 app.use(cors()); // tillåter nå app från olika platformer. Det finns mäjlighet att presissera varifån appen can nås
 
@@ -118,6 +165,7 @@ app.use((err, req, res, next) => {
       ]
   });
 });
+
 const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 });
