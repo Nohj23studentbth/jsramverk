@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-//import { io } from "socket.io-client";
-import { Socket } from "socket.io-client";
+import  io, { Socket}  from "socket.io-client";
+//import { Socket } from "socket.io-client";
 import AddComment from "./comment";
-import {socket} from "../socket.mjs";
-import utils from '../utils.mjs';
 
-interface OneDocumentProps {
-  username: string | null;
-  id: string;
+// Define the shape of formData and comments
+interface FormData {
   title: string;
   content: string;
-  handleClose: () => void;
 }
 
 interface Comment {
@@ -29,31 +25,21 @@ interface SocketUpdateData {
   content: string;
 }
 
+// interfase for element
+interface OneDocumentProps {
+  username: string | null;
+  id: string;
+  title: string;
+  content: string;
+  handleClose: () => void; }
+
 function Document() {
-
-  // function OneDocument({username, id, title: intialTitle, content: initialContent, handleClose }: OneDocumentProps) {
-  //   const SERVER_URL = "http://localhost:3000";
-  //   // declare variabels and function to change them
-  //   const [title, setTitle] = useState(intialTitle);
-  //   const [content, setContent] = useState(initialContent);
-  //   const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
-  //   //const [contentEvent, setContentEven] = useState(ContentEvent)
-    
-  //   useEffect(() => {
-  //      // Connect the socket when the component mounts
-  //      socket.connect();
-
-  //      // Listen for "content" event to update title and content from the server
-  //      socket.on("content", (data: ContentEvent) => {
-  //          setTitle(title);
-  //          setContent(content);
-  //      });
   const [loading, setLoading] = useState<boolean>(true);
   const [formData, setFormData] = useState<FormData>({
     title: "",
     content: "",
   });
-  const [caretPosition, setCaretPosition] = useState({ caret: 0, line: 0 });
+  const [caretPosition, setCaretPosition] = useState({caret: 0, line: 0, x: 0, y: 0 });
   const [comments, setComments] = useState<Comment[]>([]);
 
   const { id } = useParams<{ id: string }>(); // Explicit typing for useParams
@@ -64,7 +50,7 @@ function Document() {
       ? "https://jsramverk-oleg22-g9exhtecg0d2cda5.northeurope-01.azurewebsites.net/"
       : "http://localhost:3000";
 
-  const socketRef = useRef<Socket | null>(null); // Add type for socketRef
+  const socketRef = useRef<typeof Socket | null>(null); // Add type for socketRef
 
   const handelSocketUpdate = (update: string, data: SocketUpdateData) => {
     const path = update === "socketJoin" ? data : data;
@@ -179,7 +165,9 @@ function Document() {
         ? caretPosition
         : caretPosition - (value.lastIndexOf("\n", caretPosition - 1) + 1);
 
-    setCaretPosition({ caret: caretPositionInLine, line: lineNumber });
+    const x = e.clientX; // Example using mouse event coordinates
+    const y = e.clientY;
+    setCaretPosition({ caret: caretPositionInLine, line: lineNumber, x:x, y:y });
   };
 
   if (loading) {

@@ -47,11 +47,11 @@ function AppArticle({usersname, documents, reloadDocuments, selectedIndex, setSe
             ) : ( // if a document is selected, render OneDocument component
                 
                 <OneDocument
-                    username={usersname}
-                    id={documents[selectedIndex]._id}
-                    title={documents[selectedIndex].title}
-                    content={documents[selectedIndex].content}
-                    handleClose={handleClose}
+                    // username={usersname}
+                    // id={documents[selectedIndex]._id}
+                    // title={documents[selectedIndex].title}
+                    // content={documents[selectedIndex].content}
+                    // handleClose={handleClose}
                 />
             )}
         </div>
