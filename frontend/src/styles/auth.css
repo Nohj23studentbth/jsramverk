@@ -13,3 +13,10 @@ body #root .auth-button {
     grid-template-rows: 5px 1fr;
 
 }
+
+.auth-options form.register-form .input-group.check label{
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 20px;
+    height: 20px;
+}

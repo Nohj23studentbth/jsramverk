@@ -34,9 +34,7 @@ function Auth({ onLoginSuccess }: AuthProps) {
             console.log(response)
             if (response.ok) {
                 if (route === '/auth/login') {
-                    localStorage.setItem('token', response.result.token);
-                    localStorage.setItem('username', username);
-                    localStorage.setItem('password', password);
+                    sessionStorage.setItem('username', username);
                     alert("You are logged in!");
                     onLoginSuccess(); // Notify parent component of successful login
                 } else if (route === '/auth/register') {
@@ -44,7 +42,7 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     alert('User successfully registered. Please log in!');
                     handleFormChange('login'); // Switch to login form after successful registration
                 } else if (route === '/auth/unregister') {
-                    localStorage.clear(); // Clear local storage on account removal
+                    sessionStorage.clear(); // Clear local storage on account removal
                     setMessage('User successfully removed. All your data are removed!');
                     alert('User successfully removed. All your data are removed!');
                     handleFormChange('buttons'); // Go back to buttons after unregistration
@@ -62,8 +60,8 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     alert('Incorrect username or password.');
                     handleFormChange('buttons'); // Return to button selection
                 } else {
-                    // setError('An error occurred. Please try again.');
-                    // alert('An error occurred. Please try again.');
+                    setError('An error occurred. Error message');
+                    alert('An error in registration occurred.');
                     handleFormChange('buttons');
                 }
             }
@@ -100,6 +98,7 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     password={password}
                     setUsername={setUsername}
                     setPassword={setPassword}
+                    handleFormChange={handleFormChange}
                 />
                  {error && <p className="error-message">{error}</p>}
                  {message && <p className="success-message">{message}</p>}
@@ -124,6 +123,7 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     password={password}
                     setUsername={setUsername}
                     setPassword={setPassword}
+                    handleFormChange={handleFormChange}
                 />
                  {error && <p className="error-message">{error} <a href="/api_key/deregister">or return to start</a></p>}
                  {message && <p className="success-message">{message}</p>}
@@ -137,15 +137,18 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     buttonText={'Remove Account'}
                     errorString={'Failed to unregister. Please check your credentials.'}
                     greeting={'Remove your account'}
-                    conditionsHeader={'CAUTION!'}
-                    conditionsText={[<><h3 key="1">IT IS YOUR RESPONSIBILITY TO SAVE YOUR DATA </h3>
-                        <h3 key="2">IF YOUR PROCEED All YOUR DATA WILL BE REMOVED </h3>
-                        <h3 key="3">All your credential will be also removed.</h3></>]}
+                    conditionsHeader={'CAUTION! '}
+                    conditionsText={[<>
+                                    <h4 key="1">If you proceed, all your credential will be removed!</h4>
+                                    <h4 key="1">All your data will ve removed!</h4>
+                                    <h4 key="2"> It is your responsobility to sava your data!</h4>
+                                </>]}
                     handleSubmit={(e) => handleSubmit(e, '/auth/unregister', 'DELETE')} // Pass down the handleSubmit
                     username={username}
                     password={password}
                     setUsername={setUsername}
                     setPassword={setPassword}
+                    handleFormChange={handleFormChange}
                 />
                  {error && <p className="error-message">{error}</p>}
                  {message && <p className="success-message">{message}</p>}

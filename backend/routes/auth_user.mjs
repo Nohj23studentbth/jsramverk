@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import userFunctions from '../docs/mongoUsers.mjs'
 
-// Define your User schema (mongoose)
+
+//updated shema: 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true }
@@ -12,20 +13,22 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('User', UserSchema);
 
 // JWT secret key (use dotenv to store the secret key)
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'wery_new_jwt_secret_key';
 
 const router = express.Router();
 
 // User registration route
 router.post('/register', async (req, res) => {
+    console.log("in register route")
     const { username, password } = req.body;
-
+    console.log("in register route")
     try {
         // Check if the user already exists
+        console.log("in register route")
         const existingUser = await userFunctions.getUser(username);
 
         //console.timeEnd("DB query time");
-
+    console.log("in register route")
         // If the user already exists, return a 409 Conflict status with a descriptive message
         if (existingUser) {
             return res.status(409).json({
@@ -88,13 +91,27 @@ router.post('/login', async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ token });
+        // Set the token in a cookie to reduse riak of XSS atack 
+        // and to send token automaticaly, so reduse complicated code
+        res.cookie('token', token, {
+            httpOnly: true, // Prevent access to the token via JavaScript
+            secure: process.env.NODE_ENV === 'production', // Send cookies over HTTPS only in production
+            sameSite: 'Strict',
+            maxAge: 60 * 60 * 1000, // Token expires in 1 hour (same as the token expiry)
+        });
+
+        res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         res.status(500).json({ message: 'Error during login', error });
     }
 });
 
-// User login route
+// add loguot route to remove token from cookies
+router.post('/logout', (req, res) => {
+    res.clearCookie('token'); // Clear the token cookie
+    res.json({ message: 'Logged out successfully' });
+});
+// User fegister route
 router.delete('/unregister', async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -112,7 +129,7 @@ router.delete('/unregister', async (req, res) => {
     }
 });
 
-// Middleware to protect routes
+// Middleware to protect routes (extract autentication token from headers)
 export const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
 

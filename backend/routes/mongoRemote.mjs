@@ -46,9 +46,9 @@ router.put('/update', async (req, res) => {
 // remove a document
 router.delete('/delete/:id', async (req, res) => {
     const id = req.params.id;
-    const {username, password} = req.body;
+    const {username} = req.body;
     try {
-        const result = await mongoDocs.removeDocument(id, username, password);
+        const result = await mongoDocs.removeDocument(id, username);
         res.json({ result });
     } catch (error) {
         res.json({ error: error });

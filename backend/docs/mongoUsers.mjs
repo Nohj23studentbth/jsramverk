@@ -113,7 +113,8 @@ const mongoUsers = {
         } finally {
             await db.client.close();
         }
-    }
+    },
+    
 };
 
 export default mongoUsers;

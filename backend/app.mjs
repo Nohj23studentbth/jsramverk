@@ -9,6 +9,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
+import cookieParser from 'cookie-parser';
 
 
 import mongoRemote from "./routes/mongoRemote.mjs";
@@ -24,11 +25,19 @@ import RootQueryType from "./graphql/root.mjs";
 
 const app = express();
 const httpServer = createServer(app);
+// const io = new Server(httpServer, {
+//   autoConnect: false,
+//   cors: {
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "DELETE", "PUT"],
+//   }
+// });
 const io = new Server(httpServer, {
   autoConnect: false,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000", // Adjust based on where your frontend runs
     methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true, // ALLOW COOKIES
   }
 });
 
@@ -43,12 +52,16 @@ io.on('connection', function(socket) {
     // });
 })
 
-app.use(cors()); // tillåter nå app från olika platformer. Det finns mäjlighet att presissera varifån appen can nås
+const corsOptions = {
+  origin: 'http://localhost:3000', // Frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Allow cookies to be included
+};
 
-//const allowedOrigins = ['http://localhost:3001'];
-
-// Parse application/json
-app.use(bodyParser.json());
+app.use(cors(corsOptions)); // tillåter nå app från olika platformer. Det finns mäjlighet att presissera varifån appen can nås
+app.use(cookieParser());
+// // Parse application/json
+// app.use(bodyParser.json());
 
 app.disable('x-powered-by');
 
@@ -64,9 +77,6 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(process.cwd(), "public")));
 
 app.use(express.json()); // in plase of bodyParser.urlencoded and bodyParser.json
-
-// // Middleware to override the method
-// app.use(methodOverride('_method'));
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
