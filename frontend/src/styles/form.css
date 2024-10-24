@@ -44,3 +44,14 @@ form.doc {
 .doc input[type="submit"]:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
+
+#root lable.check {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 20px;
+}
+
+#root label.check input.check {
+    height: 20px;
+    width: 20px;
+}

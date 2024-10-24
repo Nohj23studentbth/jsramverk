@@ -19,26 +19,23 @@ const utils = {
      */
     processRoute : async function processRoute(passedMethod = 'GET', route = "/", body = null, headers = {}) {
         const url = backendUrl + route;
-        console.log("route: ",route)
-        console.log(" url: ",url)
-        console.log("body: ", body)
-        console.log("headers: ", headers)
+        // console.log("route: ",route)
+        // console.log(" url: ",url)
+
         const defaultHeaders = { 'Content-Type': 'application/json'};
         const mergeHeaders = {...defaultHeaders, ...headers};
 
         const options = {
             method: passedMethod,
             headers: mergeHeaders,
-            body: body ? JSON.stringify(body) : null,
-            // INCLUDE COOKIES: This ensures cookies (including HTTP-only cookies) are sent with requests
-            credentials: 'include',
+            body: body ? JSON.stringify(body) : null, 
         };
 
         try {
             // Pass the URL and options to fetch
-            console.log(`Fetching data from URL: ${url} with options:`, options)
+            //console.log(`Fetching data from URL: ${url} with options:`, options)
             const response = await fetch(url, options);
-            console.log("Respons of the processRoute", response)
+            //console.log("Respons of the processRoute", response)
             if (!response.ok) {
                 const errorData = await response.json();
                 //console.error('Error:', errorData.message);  // Will print: 'No username found'

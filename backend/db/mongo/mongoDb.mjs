@@ -2,8 +2,8 @@ import 'dotenv/config';
 import { MongoClient, ServerApiVersion} from 'mongodb';
 
 //Connect to remote mongo-database
-//let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&w=majority&appName=texteditor`;
-let uri = "mongodb://localhost:27017";
+let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&w=majority&appName=texteditor`;
+//let uri = "mongodb://localhost:27017";
 
 /**
  * Connect to remote database

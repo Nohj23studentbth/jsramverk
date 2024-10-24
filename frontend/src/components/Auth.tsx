@@ -34,7 +34,9 @@ function Auth({ onLoginSuccess }: AuthProps) {
             console.log(response)
             if (response.ok) {
                 if (route === '/auth/login') {
+                    sessionStorage.setItem('token', response.result.token);
                     sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('password', password);
                     alert("You are logged in!");
                     onLoginSuccess(); // Notify parent component of successful login
                 } else if (route === '/auth/register') {
@@ -60,8 +62,8 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     alert('Incorrect username or password.');
                     handleFormChange('buttons'); // Return to button selection
                 } else {
-                    setError('An error occurred. Error message');
-                    alert('An error in registration occurred.');
+                    // setError('An error occurred. Please try again.');
+                    // alert('An error occurred. Please try again.');
                     handleFormChange('buttons');
                 }
             }
@@ -137,12 +139,10 @@ function Auth({ onLoginSuccess }: AuthProps) {
                     buttonText={'Remove Account'}
                     errorString={'Failed to unregister. Please check your credentials.'}
                     greeting={'Remove your account'}
-                    conditionsHeader={'CAUTION! '}
-                    conditionsText={[<>
-                                    <h4 key="1">If you proceed, all your credential will be removed!</h4>
-                                    <h4 key="1">All your data will ve removed!</h4>
-                                    <h4 key="2"> It is your responsobility to sava your data!</h4>
-                                </>]}
+                    conditionsHeader={'CAUTION!'}
+                    conditionsText={[<><h3 key="1">IT IS YOUR RESPONSIBILITY TO SAVE YOUR DATA </h3>
+                        <h3 key="2">IF YOUR PROCEED All YOUR DATA WILL BE REMOVED </h3>
+                        <h3 key="3">All your credential will be also removed.</h3></>]}
                     handleSubmit={(e) => handleSubmit(e, '/auth/unregister', 'DELETE')} // Pass down the handleSubmit
                     username={username}
                     password={password}

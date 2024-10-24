@@ -5,6 +5,7 @@ import Document from '../functions/interfase';
 interface AppArticleProps {
     usersname:string | null;
     documents: Document[];
+    //reloadUsers: () => void;
     reloadDocuments: () => void;
     selectedIndex: number | null; // Selected document index from parent
     setSelectedIndex: (index: number | null) => void; // Function to update selectedIndex in parent

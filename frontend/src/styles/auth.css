@@ -1,10 +1,4 @@
-body #root .auth-button {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 3em;
-    justify-content: space-between;
-    margin: 9em 17em;
-}
+
 
 #root .auth-options {
     display: grid;
@@ -12,11 +6,4 @@ body #root .auth-button {
     grid-column: span 2;
     grid-template-rows: 5px 1fr;
 
-}
-
-.auth-options form.register-form .input-group.check label{
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    gap: 20px;
-    height: 20px;
 }

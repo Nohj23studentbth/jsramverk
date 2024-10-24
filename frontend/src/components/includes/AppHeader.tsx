@@ -1,3 +1,4 @@
+import React from 'react'; 
 import logo from './../../functions/logo.svg';
 import utils from '../../utils.mjs';
 
@@ -5,9 +6,8 @@ interface AppHeaderProps {
     reloadDocuments: () => void;
     selectedIndex: number | null;
     username: string | null;
-    isAutenticated: boolean;
-    // password: string | null;
-    // token: string | null;
+    password: string | null;
+    token: string | null;
     handleClose: () => void;
     selectedDocumentId: string; 
 }
@@ -16,16 +16,16 @@ function AppHeader({
     selectedIndex, 
     handleClose, 
     selectedDocumentId, 
-    username,
-    isAutenticated,
-    // password, 
-    // token, 
+    username, 
+    password, 
+    token, 
     reloadDocuments 
 }: AppHeaderProps) {
 
-    const logOut = async () => {
-        await utils.processRoute('POST', '/auth/logout');
-        sessionStorage.clear(); // Clear any other data you may have stored (optional)
+    const logOut = () => {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('password');
         window.location.reload();
     };
 
@@ -45,9 +45,7 @@ function AppHeader({
         try {
             const response = await utils.processRoute('DELETE', 
                 `/data/delete/${selectedDocumentId}`,
-                { username: username,
-                    //  password: password 
-                    });
+                { username: username, password: password });
 
             if (response.status === 200) {
                 alert('Document deleted successfully!');
@@ -67,7 +65,7 @@ function AppHeader({
             <h1>SSR Documents Editor</h1>
 
             {/* Conditionally render "Create Document" and "Logout" buttons based on login status */}
-            {isAutenticated && (
+            {token && (
                 <>
                     <div>
                         {selectedIndex === null ? (

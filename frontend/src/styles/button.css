@@ -48,7 +48,16 @@ body div.main div.article form button.btn.btn-primary.change-collection {
     color: red;
 }
 
-.submit-button, .return-button {
+body #root .auth-button {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3em;
+    justify-content: space-between;
+    margin: 9em 17em;
+}
+
+.submit-btn,
+body #root .return-btn {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -59,7 +68,7 @@ body div.main div.article form button.btn.btn-primary.change-collection {
     cursor: pointer;
 }
 
-.submit-button:hover,
-.return-button:hover {
+.submit-btn:hover,
+body #root .return-btn:hover {
     background-color: #c82333;
 }
