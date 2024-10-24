@@ -1,29 +1,40 @@
 import database from "../db/mongo/mongoDb.mjs";
 
+
 const users = {
-    getAll: async function (res, apiKey) {
+    getAll: async function (apiKey=null) {
         let db;
-
         try {
-            db = await database.getDb.db;
+            db = await database.connect();
+            let filter = null;
+            if(apiKey){
+                filter = { key: apiKey };
+            }
 
-            const filter = { key: apiKey };
-            const suppress = { users: { email: 1, password: 0 }};
+            const suppress = { users: { username: 1, password: 0 }};
 
-            const keyObject = await getDb.collection.findOne(filter, suppress);
+            //const keyObject = await db.collection.findOne(filter, suppress);
 
+            const keyObject = await db.collection.find({}).toArray();
             let returnObject = [];
 
-            if (keyObject.users) {
-                returnObject = keyObject.users.map(function (user) {
-                    return { email: user.email };
+            if (keyObject) {
+                returnObject = keyObject.map(function(user) {
+                    return {
+                        userid: user._id.toString(), // Ensure these fields exist in your documents
+                        username: user.username,
+                        password: user.password,
+                        documents: user.documents,
+                        sharedDocuments: user.sharedDocuments
+                    } // Ensure this is structured correctly
                 });
             }
 
-            return res.status(200).json({
-                data: returnObject
-            });
+           //console.log("returnObject: ", returnObject);
+
+            return returnObject;
         } catch (err) {
+            console.log("EROOR IN USERS MODELS")
             return res.status(500).json({
                 error: {
                     status: 500,
@@ -33,7 +44,7 @@ const users = {
                 }
             });
         } finally {
-            await getDb.client.close();
+            await db.client.close();
         }
     }
 };

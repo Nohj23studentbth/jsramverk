@@ -10,9 +10,17 @@ import morgan from 'morgan';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 
+
 import mongoRemote from "./routes/mongoRemote.mjs";
 import authRoutes from "./routes/auth_user.mjs";
-//import authRoutes, { authenticateToken } from './routes/auth.js'; // import authentication route
+
+// GAPHQL
+import { graphqlHTTP } from 'express-graphql';
+const visual = true; // SET IT TO FALSE ONDER PRODUCTION!
+import {GraphQLSchema} from "graphql";
+
+import RootQueryType from "./graphql/root.mjs";
+//import users from "./models/users.mjs"
 
 const app = express();
 const httpServer = createServer(app);
@@ -25,13 +33,14 @@ const io = new Server(httpServer, {
 });
 
 io.on('connection', function(socket) {
-  socket.on("content", function (data) {
-    console.log(data);
+    console.log(socket.id);
+    // socket.on("content", function (data) {
+    //     console.log(data);
 
-    io.emit("content", data);
+    //     io.emit("content", data);
 
-    // Spara till databas och göra annat med data
-});
+    //     // Spara till databas och göra annat med data
+    // });
 })
 
 app.use(cors()); // tillåter nå app från olika platformer. Det finns mäjlighet att presissera varifån appen can nås
@@ -65,8 +74,18 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(morgan('combined')); // 'combined' outputs the Apache style LOGs
 }
 
+//app.get("/", (req, res) => users.getAll(res));
 app.use('/data', mongoRemote); // import routes using remote mongoDB
 app.use('/auth', authRoutes); // Use auth routes under '/auth'
+
+// FOR GRAPHQL
+const schema = new GraphQLSchema({
+  query: RootQueryType
+});
+app.use('/graphql', graphqlHTTP({
+  schema: schema,
+  graphiql: visual, // Visual är satt till true under utveckling
+}));
 
 // // Protect the documents route
 // app.get('/documents', authenticateToken, async (req, res) => {
@@ -106,4 +125,5 @@ const server = app.listen(port, () => {
 
 // ES module-style code (Correct)
 export { app, server};
+
 

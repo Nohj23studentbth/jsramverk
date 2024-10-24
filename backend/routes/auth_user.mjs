@@ -17,36 +17,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_key';
 const router = express.Router();
 
 // User registration route
-// router.post('/register', async (req, res) => {
-//     const { username, password } = req.body;
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     try {
-//         console.time("DB query time");
-//         const isMatch = await userFunctions.getUser(username);
-//         console.timeEnd("DB query time");
-//         if(isMatch.username) {
-//            return res.status(401);
-           
-//         } else {
-//             const user = new User({ username, password: hashedPassword });
-//             const response = await userFunctions.saveUser(user);
-//             console.log(response)
-            
-//             return response;
-//         }
-//     } catch (error) {
-       
-//         return res.status(500);
-//     }
-// });
-
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // // Log database query time for performance diagnostics
-        // console.time("DB query time");
-
         // Check if the user already exists
         const existingUser = await userFunctions.getUser(username);
 

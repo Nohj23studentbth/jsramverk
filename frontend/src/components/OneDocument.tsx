@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {socket} from "../socket.mjs";
 import utils from '../utils.mjs';
 
-
+// Define an interface for the socket event data
+interface ContentEvent {
+    title: string;   // Ensure title is a string
+    content: string; // Ensure content is a string
+}
 // interfase for element
 interface OneDocumentProps {
     username: string | null;
@@ -19,13 +23,14 @@ function OneDocument({username, id, title: intialTitle, content: initialContent,
     const [title, setTitle] = useState(intialTitle);
     const [content, setContent] = useState(initialContent);
     const [isSubmitting, setIsSubmitting] = useState(false); // For submit state (optional)
+    //const [contentEvent, setContentEven] = useState(ContentEvent)
     
     useEffect(() => {
        // Connect the socket when the component mounts
        socket.connect();
 
        // Listen for "content" event to update title and content from the server
-       socket.on("content", ({ title, content }) => {
+       socket.on("content", (data: ContentEvent) => {
            setTitle(title);
            setContent(content);
        });
