@@ -428,9 +428,9 @@ På användare sidan skiskas nu alla förfrågan som gäller dokument med hjälp
 
 Det finns mojlighet att testa shemor med unde utveckling mode på Localhost:3000/graphql.
 
-### Sockets & Kommentarer
+## Sockets & Kommentarer
 
-## Backend
+### Backend
 
 - Hantering av RoomState:
 RoomState hanterar lagring, hämtning och uppdatering av dokumenttillståndet för varje rum i MongoDB. När användare ansluter till ett rum hämtas dess aktuella innehåll, eller skapas om det inte redan finns. Roomstate rensas automatiskt från databasen efter 5 minuters inaktivitet i rummet.
@@ -441,7 +441,7 @@ Kommentarsmodulen möjliggör kommentering i realtid med ihållande lagring i Mo
 - Hantering av Socket.io-anslutningar:
 Socket.io hanterar klientanslutningar, vilket gör det möjligt för användare att ansluta till rum, dela uppdateringar och se andra användares kommentarer i realtid. Servern skickar uppdateringar av dokument och kommentarer till alla klienter i rummet, vilket möjliggör smidig samarbete. Vid frånkoppling, om ett rum är tomt, tas dess tillstånd bort för att optimera resursanvändningen.
 
-## Frontend
+### Frontend
 
 - OneDocument-komponent
 Tillåter realtidsredigering av dokumentets titel och innehåll. Synkroniserar dokumentuppdateringar mellan användare i ett gemensamt rum med Socket.io. Lägger till kommentarer med specifika markörpositioner (tecken och rad) för att bibehålla kontext i dokumentet.
