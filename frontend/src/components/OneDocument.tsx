@@ -104,23 +104,6 @@ function OneDocument({docType, username, docOwner, id, title: intialTitle, conte
         socket.emit("documentUpdate", { title, content: newContent });
     };
 
-  
-    // const currentPath =
-    //   process.env.NODE_ENV === "production"
-    //     ? "https://jsramverk-oleg22-g9exhtecg0d2cda5.northeurope-01.azurewebsites.net/"
-    //     : "http://localhost:3000";
-  
-    //const socketRef = useRef<typeof Socket | null>(null); // Add type for socketRef
-  
-    // const handelSocketUpdate = (update: string, data: SocketUpdateData) => {
-    //   const path = update === "socketJoin" ? data : data;
-  
-      
-    //   setFormData({
-    //     title: path.title,
-    //     content: path.content,
-    //   });
-    // };
     useEffect(() => {
        // Connect the socket when the component mounts
        socket.connect();
@@ -215,19 +198,6 @@ function OneDocument({docType, username, docOwner, id, title: intialTitle, conte
         }
     };
 
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //       ...formData,
-    //       [name]: value,
-    //     });
-    
-    //     socket.emit("update", {
-    //       ...formData,
-    //       [name]: value,
-    //     });
-    // };
-
     const handleCarotMove = (e: React.MouseEvent<HTMLTextAreaElement>) => {
         const target = e.target as HTMLTextAreaElement;
         const value = target.value;
@@ -246,12 +216,24 @@ function OneDocument({docType, username, docOwner, id, title: intialTitle, conte
     // element
     return (
         <> {/* wrap all in the one eleemnt */}
-            <AddComment
-                caretPosition={caretPosition}
-                socket={socket}
-                newComment={handelSocketComment}
-            />
-            <form className='doc' onSubmit={handleSubmitAndClose}> {/* change when the form submitted */}
+            <div className="comment_handler">
+                <AddComment
+                    caretPosition={caretPosition}
+                    socket={socket}
+                    newComment={handelSocketComment}
+                />
+                <div>
+                    {comments.map((comment, index) => (
+                    <div className="comment" key={index}>
+                        <h3>
+                        Rad {comment.row} | char {comment.caret}
+                        </h3>
+                        <p>{comment.comment}</p>
+                    </div>
+                    ))}
+                </div>
+            </div>
+            <form className='doc form-wrapper' onSubmit={handleSubmitAndClose}> {/* change when the form submitted */}
                 <div className='button-div'>
                     <button type="submit" value="Submit" className='btn btn-primary change-collection' disabled={isSubmitting}>
                         {isSubmitting ? 'Submitting...' : 'Save and close'}
@@ -274,17 +256,6 @@ function OneDocument({docType, username, docOwner, id, title: intialTitle, conte
                     {/* Combined Submit and Back to List button */}
                 </div>
             </form>
-            <div>
-                {comments.map((comment, index) => (
-                <div className="comment" key={index}>
-                    <h3>
-                    Rad {comment.row} | char {comment.caret}
-                    </h3>
-                    <p>{comment.comment}</p>
-                </div>
-                ))}
-            </div>
-            
         </>
 )};
 
