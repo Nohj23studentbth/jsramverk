@@ -1,6 +1,6 @@
 /* global it describe before */
 
-process.env.NODE_ENV = 'test';
+//process.env.NODE_ENV = 'test';
 
 // import { parse } from 'node-html-parser';
 // import request from 'supertest'; // use supertest for HTTP requests

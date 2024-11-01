@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/14</span>
+                <span class='fraction'>10/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>4/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>1/2</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/14</span>
+                <span class='fraction'>10/16</span>
             </div>
         
             
@@ -103,9 +103,25 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
-<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -115,73 +131,78 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import 'dotenv/config';
-import { MongoClient, ServerApiVersion} from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 &nbsp;
-//Connect to remote mongo-database
-//let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&amp;w=majority&amp;appName=texteditor`;
-let uri = "mongodb://localhost:27017";
+// Connect to remote mongo-database
+let uri = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@${process.env.DB_CLUSTER}.topue.mongodb.net/admin?retryWrites=true&amp;w=majority&amp;appName=texteditor`;
 &nbsp;
-/**
- * Connect to remote database
- * 
- * @returns object: mongo database
- */
-const database = { 
-     connect: async function connect() {
-        process.env.DB_NAME = "docs";
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (process.env.NODE_ENV === 'test') {
-            uri = "mongodb://localhost:27017/test";
+// Create an object to manage the database connection
+const database = {
+    connect: async function() {
+        // If in test environment, use a local database
+        if (process.env.NODE_ENV === 'test') {
+        uri = "mongodb://localhost:27017/test";
         }
+&nbsp;
         const client = new MongoClient(uri, {
-                    serverApi: {version: ServerApiVersion.v1,
-                    strict: true,
-                    deprecationErrors: true
-                }
-            }
-        );
+        serverApi: {
+            version: ServerApiVersion.v1,
+            strict: true,
+            deprecationErrors: true,
+        },
+        });
 &nbsp;
+        try {
         await client.connect();
-<span class="cstat-no" title="statement not covered" >        try {</span>
-            const db = <span class="cstat-no" title="statement not covered" >client.db(process.env.DB_NAME);</span>
-            const users = <span class="cstat-no" title="statement not covered" >db.collection(process.env.COLLECTION_NAME); </span>
-<span class="cstat-no" title="statement not covered" >            return {db:db, client: client, collection: users};</span>
+        const db = client.db(process.env.DB_NAME || <span class="branch-1 cbranch-no" title="branch not covered" >'default_db')</span>; // Ensure valid DB name
+        const collection = db.collection(process.env.COLLECTION_NAME || <span class="branch-1 cbranch-no" title="branch not covered" >'document')</span>; // Ensure valid collection name
+        return { db, client, collection };
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            console.error("Error by remote connection: ", error);</span>
-<span class="cstat-no" title="statement not covered" >            await client.close(); </span>// Close client on error
-<span class="cstat-no" title="statement not covered" >            throw error; </span>// Rethrow the error for proper handling
+<span class="cstat-no" title="statement not covered" >        console.error("Error during remote connection: ", error);</span>
+<span class="cstat-no" title="statement not covered" >        await client.close();</span>
+<span class="cstat-no" title="statement not covered" >        throw error; </span>
         }
-  }
-}
-  
+    },
+&nbsp;
+    getDb: <span class="fstat-no" title="function not covered" >as</span>ync function() {
+        const { client, db } = <span class="cstat-no" title="statement not covered" >await this.connect();</span>
+        const collection = <span class="cstat-no" title="statement not covered" >db.collection(process.env.COLLECTION_NAME || 'document');</span>
+        
+<span class="cstat-no" title="statement not covered" >        return {</span>
+        db,
+        collection,
+        client, // Return the client for cleanup later
+        };
+    },
+};
+&nbsp;
 export default database;
 &nbsp;</pre></td></tr></table></pre>
 
@@ -190,7 +211,7 @@ export default database;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-16T17:11:45.129Z
+                at 2024-11-01T08:31:11.082Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

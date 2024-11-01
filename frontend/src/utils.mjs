@@ -3,7 +3,7 @@ const remoteBackend = "https://jaramverk-olga22-noahh-djczc2fnbcgheeb2.swedencen
 
 // Bestäm vilken backend som ska användas baserat på om vi kör lokalt eller i produktion
 //const backendUrl = window.location.hostname === 'localhost' ? localBackend : remoteBackend;
-const backendUrl = remoteBackend;
+const backendUrl = window.location.hostname === 'localhost' ? localBackend : remoteBackend;
 
 const utils = {
 

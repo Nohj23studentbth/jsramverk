@@ -32,7 +32,7 @@ function OneDocument({docType, username, docOwner, id, title: intialTitle, conte
         socket.connect();
      
         // Create a unique room ID
-        const roomId = `${docOwner}_${id}`; // Using owner ID and document ID for the room
+        const roomId = `${id}_${id}`; // Using owner ID and document ID for the room
 
         // Emit the create event to join the room
         socket.emit("create", roomId);

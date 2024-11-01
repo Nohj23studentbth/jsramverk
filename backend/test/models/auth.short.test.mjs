@@ -1,6 +1,7 @@
 // auth.test.js
 import auth from '../../models/auth.mjs';
 import getDb from '../../db/mongo/mongoDb.mjs';
+process.env.NODE_ENV = 'test'
 // import bcrypt from 'bcryptjs';
 // import webtoken from 'jsonwebtoken';
 // import data from '../../models/data.mjs';

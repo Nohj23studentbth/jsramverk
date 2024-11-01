@@ -44,57 +44,57 @@ app.use(morgan('combined')); // Log requests in the Apache style
 
 // Socket.io connection handling
 io.on("connection", (socket) => {
-    socket.on("create", async (room) => {
-        if (!room) {
-            console.error("Room ID is undefined");
-            return; // Avoid proceeding if room is not defined
-        }
-        await socket.join(room);
+  console.log("New client connected:", socket.id);
 
-        socket.currentRoom = room;
+  socket.on("create", async (room) => {
+    if (!room) {
+      console.error("Room ID is undefined");
+      return; // Avoid proceeding if room is not defined
+    }
+    await socket.join(room);
+    console.log(`Client ${socket.id} joined room: ${room}`);
+    socket.currentRoom = room;
 
-        try {
-        const docComments = await comments.getComments(room);
-            socket.emit("newComment", docComments);
+    try {
+      const docComments = await comments.getComments(room);
+      socket.emit("newComment", docComments);
 
-            const data = await roomState.getRoomState(room);
-            if (data) {
-                socket.emit("socketJoin", data);
-            }
+      const data = await roomState.getRoomState(room);
+      if (data) {
+        socket.emit("socketJoin", data);
+      }
 
-            // Set room timeout
-            roomTimeouts[room] = setTimeout(async () => {
-                await roomState.clearRoomState(room);
-                delete roomTimeouts[room];
-            }, 300000); // 5 minutes
-        } catch (error) {
-            console.error("Error in create event:", error);
-        }
-    });
+      // Set room timeout
+      roomTimeouts[room] = setTimeout(async () => {
+        await roomState.clearRoomState(room);
+        delete roomTimeouts[room];
+      }, 300000); // 5 minutes
+    } catch (error) {
+      console.error("Error in create event:", error);
+    }
+  });
 
-    // Handle document updates from clients
-    socket.on("documentUpdate", (data) => {
-        // Broadcast the updated title and content to other clients in the room
-        socket.to(socket.currentRoom).emit("documentUpdate", data);
-    });
+  // Handle document updates from clients
+  socket.on("documentUpdate", (data) => {
+    // Broadcast the updated title and content to other clients in the room
+    socket.to(socket.currentRoom).emit("documentUpdate", data);
+  });
 
-    socket.on("comment", async (data) => {
-        const adress = socket.currentRoom.split("_");
-        await mongoDocs.commentDoc(adress[0], adress[1], data.comment.author, data.comment.content);
-    
-        comments.addComment(socket.currentRoom, data.comment, data.caretPosition.caret, data.caretPosition.line);
-        socket.to(socket.currentRoom).emit("newComment", data);
-    });
+  socket.on("comment", (data) => {
+    comments.addComment(socket.currentRoom, data.comment, data.caretPosition.caret, data.caretPosition.line);
+    socket.to(socket.currentRoom).emit("newComment", data);
+  });
 
-    socket.on("disconnect", async () => {
-        if (socket.currentRoom) {
-        const users = io.sockets.adapter.rooms.get(socket.currentRoom);
-        if (!users || users.size === 0) {
-            await roomState.clearRoomState(socket.currentRoom);
-            delete roomTimeouts[socket.currentRoom];
-        }
-        }
-    });
+  socket.on("disconnect", async () => {
+    console.log("Client disconnected:", socket.id);
+    if (socket.currentRoom) {
+      const users = io.sockets.adapter.rooms.get(socket.currentRoom);
+      if (!users || users.size === 0) {
+        await roomState.clearRoomState(socket.currentRoom);
+        delete roomTimeouts[socket.currentRoom];
+      }
+    }
+  });
 });
 
 // Parse application/json
